@@ -44,7 +44,7 @@ function Index() {
   }
 
   return (
-    <SignUpLayout title="Registrarse">
+    <SignUpLayout title="Iniciar sesi&oacute;n">
       <ToastContainer className="p-3" position="bottom-start">
         <Toast
           delay={3000}
