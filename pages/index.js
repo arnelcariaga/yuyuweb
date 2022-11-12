@@ -178,7 +178,7 @@ export async function getServerSideProps({ res, locale }) {
   }
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common", "footer"])),
+      ...(await serverSideTranslations(locale, ["logo"])),
     },
   };
 }
