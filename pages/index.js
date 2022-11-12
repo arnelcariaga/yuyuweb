@@ -13,6 +13,9 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { signIn, getSession } from "next-auth/react";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
 function Index() {
   const {
     register,
@@ -23,6 +26,7 @@ function Index() {
   const [loginStatus, setLoginStatus] = React.useState();
   const [openToastError, setOpenToastError] = React.useState(false);
   const router = useRouter();
+  const { t } = useTranslation("footer");
 
   async function onSubmit(data) {
     setDisableLoginBtn(true);
@@ -45,6 +49,7 @@ function Index() {
 
   return (
     <SignUpLayout title="Iniciar sesi&oacute;n">
+      <p>{t("description")}</p>
       <ToastContainer className="p-3" position="bottom-start">
         <Toast
           delay={3000}
@@ -161,8 +166,8 @@ function Index() {
   );
 }
 
-export async function getServerSideProps(ctx) {
-  const session = await getSession(ctx);
+export async function getServerSideProps({ res, locale }) {
+  const session = await getSession(res);
   if (session) {
     return {
       redirect: {
@@ -172,7 +177,9 @@ export async function getServerSideProps(ctx) {
     };
   }
   return {
-    props: {},
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "footer"])),
+    },
   };
 }
 
