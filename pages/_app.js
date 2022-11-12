@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
 import { store } from "../Redux/store";
+import { appWithTranslation } from "next-i18next";
 function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
@@ -9,4 +10,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);
