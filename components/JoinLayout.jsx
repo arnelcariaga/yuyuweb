@@ -6,9 +6,10 @@ import Col from "react-bootstrap/Col";
 import Footer from './Footer';
 import ChangeLocale from './ChangeLocale';
 function Layout({ children, title }) {
+    let newTitle = `YuYu || ${title}`
     return <>
         <Head>
-            <title>YuYu || {title}</title>
+            <title>{newTitle}</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
         </Head>
         <Container className="bg-info" fluid>
