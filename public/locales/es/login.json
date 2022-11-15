@@ -1,0 +1,10 @@
+{
+  "headTitle": "Panel de control",
+  "emailLabel": "Correo electrónico",
+  "wrongEmailErrorMsg": "Correo electrónico no es correcto",
+  "requiredMsg": "Campo requerido",
+  "passwordLabel": "Contraseña",
+  "loginText": "Iniciar sesión",
+  "haveNoAccount": "¿No tienes una cuenta?",
+  "signUpText": "Regístrate"
+}

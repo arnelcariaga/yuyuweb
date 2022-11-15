@@ -1,0 +1,10 @@
+{
+  "headTitle": "Control panel",
+  "emailLabel": "Email address",
+  "wrongEmailErrorMsg": "Wrong email address",
+  "requiredMsg": "Required field",
+  "passwordLabel": "Password",
+  "loginText": "Log in",
+  "haveNoAccount": "New user?",
+  "signUpText": "Sign Up"
+}

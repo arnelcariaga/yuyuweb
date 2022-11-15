@@ -1,5 +1,5 @@
 import React from "react";
-import SignUpLayout from "../components/JoinLayout";
+import JoinLayout from "../components/JoinLayout";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -26,7 +26,15 @@ function Index() {
   const [loginStatus, setLoginStatus] = React.useState();
   const [openToastError, setOpenToastError] = React.useState(false);
   const router = useRouter();
-  const { t } = useTranslation("footer");
+  const { t } = useTranslation("login");
+  let headTitle = t("headTitle"),
+    emailLabel = t("emailLabel"),
+    wrongEmailErrorMsg = t("wrongEmailErrorMsg"),
+    requiredMsg = t("requiredMsg"),
+    passwordLabel = t("passwordLabel"),
+    loginText = t("loginText"),
+    haveNoAccount = t("haveNoAccount"),
+    signUpText = t("signUpText");
 
   async function onSubmit(data) {
     setDisableLoginBtn(true);
@@ -48,8 +56,7 @@ function Index() {
   }
 
   return (
-    <SignUpLayout title="Iniciar sesi&oacute;n">
-      <p>{t("description")}</p>
+    <JoinLayout title="Iniciar sesi&oacute;n">
       <ToastContainer className="p-3" position="bottom-start">
         <Toast
           delay={3000}
@@ -71,7 +78,7 @@ function Index() {
           <IconContext.Provider value={{ size: "2em", className: "me-3" }}>
             <FaCpanel />
           </IconContext.Provider>
-          Panel de control
+          {headTitle}
         </h1>
         <Form
           className="fw-semibold text-muted mt-3 bg-white p-3 rounded-3 shadow-lg"
@@ -87,17 +94,17 @@ function Index() {
               <Form.Control
                 id="email"
                 type="email"
+                placeholder={emailLabel}
                 isInvalid={errors.email}
-                placeholder="name@example.com"
                 {...register("email", {
-                  required: "Campo obligatorio",
+                  required: requiredMsg,
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Correo electrónico no es correcto",
+                    message: wrongEmailErrorMsg,
                   },
                 })}
               />
-              <label htmlFor="email">Correo electr&oacute;nico</label>
+              <label htmlFor="email">{emailLabel}</label>
             </Form.Floating>
 
             <Form.Control.Feedback
@@ -116,15 +123,15 @@ function Index() {
               <Form.Control
                 id="password"
                 type="password"
-                placeholder="Contrase&ntilde;a"
+                placeholder={passwordLabel}
                 isInvalid={errors.password}
                 {...register("password", {
-                  required: "Campo obligatorio",
+                  required: requiredMsg,
                   maxLength: 10,
                   minLength: 6,
                 })}
               />
-              <label htmlFor="password">Contrase&ntilde;a</label>
+              <label htmlFor="password">{passwordLabel}</label>
             </Form.Floating>
 
             <Form.Control.Feedback
@@ -149,20 +156,20 @@ function Index() {
                 type="submit"
                 disabled={disableLoginBtn}
               >
-                Iniciar sesi&oacute;n
+                {loginText}
               </Button>
             </Col>
 
             <Col md={6} className="text-end">
-              <span>¿No tienes una cuenta?</span>{" "}
+              <span>{haveNoAccount}</span>{" "}
               <Link href="/signup" passHref>
-                <a href="#">Reg&iacute;strate</a>
+                <a href="#">{signUpText}</a>
               </Link>
             </Col>
           </Row>
         </Form>
       </Col>
-    </SignUpLayout>
+    </JoinLayout>
   );
 }
 
@@ -178,7 +185,12 @@ export async function getServerSideProps({ res, locale }) {
   }
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["logo"])),
+      ...(await serverSideTranslations(locale, [
+        "common",
+        "logo",
+        "login",
+        "footer",
+      ])),
     },
   };
 }
