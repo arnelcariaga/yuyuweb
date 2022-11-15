@@ -1,5 +1,5 @@
 import React from "react";
-import SignUpLayout from "../../components/JoinLayout";
+import JoinLayout from "../../components/JoinLayout";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -51,7 +51,7 @@ function SignUp() {
     }
 
     return (
-        <SignUpLayout title="Registrarse">
+        <JoinLayout title="Registrarse">
 
             <ToastContainer className="p-3" position="bottom-start">
                 <Toast delay={3000} autohide bg="danger" show={openToastError} onClose={() => setOpenToastError(!openToastError)}>
@@ -193,7 +193,7 @@ function SignUp() {
 
                 </Form>
             </Col>
-        </SignUpLayout>
+        </JoinLayout>
     );
 }
 
