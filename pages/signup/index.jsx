@@ -229,7 +229,6 @@ export async function getServerSideProps({ res, locale }) {
             ...(await serverSideTranslations(locale, [
                 "common",
                 "logo",
-                "login",
                 "signup",
                 "footer",
             ])),
