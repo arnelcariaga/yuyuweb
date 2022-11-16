@@ -16,6 +16,8 @@ import ToastContainer from 'react-bootstrap/ToastContainer';
 import { useRouter } from "next/router"
 import Link from "next/link";
 import { getSession } from "next-auth/react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 function SignUp() {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -23,6 +25,19 @@ function SignUp() {
     const [registerStatus, setRegisterStatus] = React.useState()
     const [openToastError, setOpenToastError] = React.useState(false);
     const router = useRouter()
+    const { t } = useTranslation("signup");
+    let usernameLabel = t("usernameLabel"),
+        signUpText = t("signUpText"),
+        alreadyHaveAccountText = t("alreadyHaveAccountText"),
+        logInText = t("logInText"),
+        requiredMsg = t("requiredMsg"),
+        maxLength = t("maxLength"),
+        minLength = t("minLength"),
+        wrongEmailErrorMsg = t("wrongEmailErrorMsg"),
+        emailLabel = t("emailLabel"),
+        passwordLabel = t("passwordLabel"),
+        repeatPasswordLabel = t("repeatPasswordLabel"),
+        passwordDontMatch = t("passwordDontMatch");
 
     async function onSubmit(data) {
         setDisableRegisterBtn(true)
@@ -76,23 +91,23 @@ function SignUp() {
                             <Form.Control
                                 id="username"
                                 type="text"
-                                placeholder="Nombre de usuario"
+                                placeholder={usernameLabel}
                                 {...register("username", {
-                                    required: "Campo obligatorio",
+                                    required: requiredMsg,
                                     maxLength: 20,
                                     minLength: 5
                                 })}
                                 isInvalid={errors.username}
                             />
-                            <label htmlFor="username">Nombre de usuario</label>
+                            <label htmlFor="username">{usernameLabel}</label>
                         </Form.Floating>
 
                         <Form.Control.Feedback type="invalid" className={errors?.username && "d-block"}>
                             {
                                 errors.username &&
                                 errors.username.message ||
-                                errors.username?.type === "maxLength" && <span>M&aacute;ximo de car&aacute;cteres permitidos 20</span> ||
-                                errors.username?.type === "minLength" && <span>M&iacute;nimo de car&aacute;cteres permitidos 5</span>
+                                errors.username?.type === "maxLength" && <span>{maxLength} 20</span> ||
+                                errors.username?.type === "minLength" && <span>{minLength} 5</span>
                             }
                         </Form.Control.Feedback>
                     </InputGroup>
@@ -107,14 +122,14 @@ function SignUp() {
                                 isInvalid={errors.email}
                                 placeholder="name@example.com"
                                 {...register("email", {
-                                    required: "Campo obligatorio",
+                                    required: requiredMsg,
                                     pattern: {
                                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                        message: 'Correo electrónico no es correcto'
+                                        message: wrongEmailErrorMsg
                                     }
                                 })}
                             />
-                            <label htmlFor="email">Correo electr&oacute;nico</label>
+                            <label htmlFor="email">{emailLabel}</label>
                         </Form.Floating>
 
                         <Form.Control.Feedback type="invalid" className={errors?.email && "d-block"}>
@@ -128,23 +143,23 @@ function SignUp() {
                             <Form.Control
                                 id="password"
                                 type="password"
-                                placeholder="Contrase&ntilde;a"
+                                placeholder={passwordLabel}
                                 isInvalid={errors.password}
                                 {...register("password", {
-                                    required: "Campo obligatorio",
+                                    required: requiredMsg,
                                     maxLength: 10,
                                     minLength: 6
                                 })}
                             />
-                            <label htmlFor="password">Contrase&ntilde;a</label>
+                            <label htmlFor="password">{passwordLabel}</label>
                         </Form.Floating>
 
                         <Form.Control.Feedback type="invalid" className={errors?.password && "d-block"}>
                             {
                                 errors.password &&
                                 errors.password.message ||
-                                errors.password?.type === "maxLength" && <span>M&aacute;ximo de car&aacute;cteres permitidos 10</span> ||
-                                errors.password?.type === "minLength" && <span>M&iacute;nimo de car&aacute;cteres permitidos 6</span>
+                                errors.password?.type === "maxLength" && <span>{maxLength} 10</span> ||
+                                errors.password?.type === "minLength" && <span>{minLength} 6</span>
                             }
                         </Form.Control.Feedback>
                     </InputGroup>
@@ -155,23 +170,23 @@ function SignUp() {
                             <Form.Control
                                 id="repeatPassword"
                                 type="password"
-                                placeholder="Repetir contrase&ntilde;a"
+                                placeholder={repeatPasswordLabel}
                                 isInvalid={errors.repeatPassword}
                                 {...register("repeatPassword", {
-                                    required: "Campo obligatorio",
-                                    validate: (value) => value === watch('password') || "Las contraseñas no coinciden",
+                                    required: requiredMsg,
+                                    validate: (value) => value === watch('password') || passwordDontMatch,
                                     maxLength: 10,
                                     minLength: 6
                                 })}
                             />
-                            <label htmlFor="repeatPassword">Repetir contrase&ntilde;a</label>
+                            <label htmlFor="repeatPassword">{repeatPasswordLabel}</label>
                         </Form.Floating>
 
                         <Form.Control.Feedback type="invalid" className={errors?.repeatPassword && "d-block"}>
                             {
                                 errors.repeatPassword && errors.repeatPassword.message ||
-                                errors.repeatPassword?.type === "maxLength" && <span>M&aacute;ximo de car&aacute;cteres permitidos 10</span> ||
-                                errors.repeatPassword?.type === "minLength" && <span>M&iacute;nimo de car&aacute;cteres permitidos 6</span>
+                                errors.repeatPassword?.type === "maxLength" && <span>{maxLength} 10</span> ||
+                                errors.repeatPassword?.type === "minLength" && <span>{minLength} 5</span>
                             }
                         </Form.Control.Feedback>
                     </InputGroup>
@@ -179,14 +194,14 @@ function SignUp() {
                     <Row className="mb-3 align-items-center">
                         <Col md={6}>
                             <Button variant="info" className="fw-semibold text-white" type="submit" disabled={disableRegisterBtn}>
-                                Registrarme
+                                {signUpText}
                             </Button>
                         </Col>
 
                         <Col md={6} className="text-end">
-                            <span>¿Ya tienes una cuenta?</span>{" "}
+                            <span>{alreadyHaveAccountText}</span>{" "}
                             <Link href="/" passHref>
-                                <a href="#">Iniciar sesi&oacute;n</a>
+                                <a href="#">{logInText}</a>
                             </Link>
                         </Col>
                     </Row>
@@ -198,8 +213,8 @@ function SignUp() {
 }
 
 
-export async function getServerSideProps(ctx) {
-    const session = await getSession(ctx);
+export async function getServerSideProps({ res, locale }) {
+    const session = await getSession(res);
     if (session) {
         return {
             redirect: {
@@ -210,7 +225,15 @@ export async function getServerSideProps(ctx) {
     }
 
     return {
-        props: {}
+        props: {
+            ...(await serverSideTranslations(locale, [
+                "common",
+                "logo",
+                "login",
+                "signup",
+                "footer",
+            ])),
+        }
     }
 }
 

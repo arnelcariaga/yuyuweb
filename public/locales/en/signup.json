@@ -1,9 +1,14 @@
 {
-  "username": "User name",
-  "emailAdress": "Email address",
-  "password": "Password",
-  "repeatPassword": "Repeat password",
+  "usernameLabel": "User name",
   "signUpText": "Sign Up",
   "alreadyHaveAccountText": "Already have an account?",
-  "logInText": "Log in"
+  "logInText": "Log in",
+  "requiredMsg": "Required field",
+  "maxLength": "Maximum characters allowed",
+  "minLength": "Minimum characters allowed",
+  "wrongEmailErrorMsg": "Wrong email address",
+  "emailLabel": "Email address",
+  "passwordLabel": "Password",
+  "repeatPasswordLabel": "Repeat password",
+  "passwordDontMatch": "Password don't match"
 }

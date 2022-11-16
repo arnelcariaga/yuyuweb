@@ -1,9 +1,14 @@
 {
-  "username": "Nombre de usuario",
-  "emailAdress": "Correo electrónico",
-  "password": "Contraseña",
-  "repeatPassword": "Repetir contraseña",
+  "usernameLabel": "Nombre de usuario",
   "signUpText": "Registrarme",
   "alreadyHaveAccountText": "¿Ya tienes una cuenta?",
-  "logInText": "Iniciar sesión"
+  "logInText": "Iniciar sesión",
+  "requiredMsg": "Campo requerido",
+  "maxLength": "Máximo de carácteres permitidos",
+  "minLength": "Mínimo de carácteres permitidos",
+  "wrongEmailErrorMsg": "Correo electrónico no es correcto",
+  "emailLabel": "Correo electrónico",
+  "passwordLabel": "Contraseña",
+  "repeatPasswordLabel": "Repetir contraseña",
+  "passwordDontMatch": "Las contraseñas no coinciden"
 }
