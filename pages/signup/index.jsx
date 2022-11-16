@@ -16,13 +16,15 @@ import ToastContainer from 'react-bootstrap/ToastContainer';
 import { useRouter } from "next/router"
 import Link from "next/link";
 import { getSession } from "next-auth/react";
+import { useTranslation } from "next-i18next";
 
 function SignUp() {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, formState: { errors } } = useForm()
     const [disableRegisterBtn, setDisableRegisterBtn] = React.useState(false)
     const [registerStatus, setRegisterStatus] = React.useState()
-    const [openToastError, setOpenToastError] = React.useState(false);
+    const [openToastError, setOpenToastError] = React.useState(false)
     const router = useRouter()
+    const { t } = useTranslation("login");
 
     async function onSubmit(data) {
         setDisableRegisterBtn(true)
