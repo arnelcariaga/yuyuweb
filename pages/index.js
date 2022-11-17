@@ -34,7 +34,11 @@ function Index() {
     passwordLabel = t("passwordLabel"),
     loginText = t("loginText"),
     haveNoAccount = t("haveNoAccount"),
-    signUpText = t("signUpText");
+    signUpText = t("signUpText"),
+    userDoesntExistText = t("userDoesntExistText"),
+    wrongPasswordText = t("wrongPasswordText"),
+    maxLength = t("maxLength"),
+    minLength = t("minLength");
 
   async function onSubmit(data) {
     setDisableLoginBtn(true);
@@ -46,13 +50,19 @@ function Index() {
       password,
     });
 
-    if (!result.error) {
-      router.push("/dashboard");
-    } else {
-      setLoginStatus(result.error);
+    let error = result.error;
+
+    if (error === "invalid_user") {
+      setLoginStatus(userDoesntExistText);
       setOpenToastError(true);
-      setDisableLoginBtn(false);
+    } else if (error === "invalid_password") {
+      setLoginStatus(wrongPasswordText);
+      setOpenToastError(true);
+    } else {
+      router.push("/dashboard");
     }
+
+    setDisableLoginBtn(false);
   }
 
   return (
@@ -66,7 +76,7 @@ function Index() {
           onClose={() => setOpenToastError(!openToastError)}
         >
           <Toast.Header>
-            <strong className="me-auto">YuYu | Inicio de sesi&oacute;n</strong>
+            <strong className="me-auto">YuYu | {loginText}</strong>
             <small>Hace 2 segs.</small>
           </Toast.Header>
           <Toast.Body className="text-white">{loginStatus}</Toast.Body>
@@ -140,10 +150,10 @@ function Index() {
             >
               {(errors.password && errors.password.message) ||
                 (errors.password?.type === "maxLength" && (
-                  <span>M&aacute;ximo de car&aacute;cteres permitidos 10</span>
+                  <span>{maxLength} 10</span>
                 )) ||
                 (errors.password?.type === "minLength" && (
-                  <span>M&iacute;nimo de car&aacute;cteres permitidos 6</span>
+                  <span>{minLength} 6</span>
                 ))}
             </Form.Control.Feedback>
           </InputGroup>

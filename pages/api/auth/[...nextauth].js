@@ -18,7 +18,7 @@ export default NextAuth({
         });
 
         if (!user) {
-          throw new Error("El usuario no existe.");
+          throw new Error("invalid_user");
         }
 
         const isPasswordValid = await bcrypt.compare(
@@ -33,7 +33,7 @@ export default NextAuth({
             createdAt: user.createdAt,
           };
         } else {
-          throw new Error("Contraseña incorrecta.");
+          throw new Error("invalid_password");
         }
       },
     }),

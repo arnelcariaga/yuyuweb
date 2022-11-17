@@ -6,5 +6,9 @@
   "passwordLabel": "Contraseña",
   "loginText": "Iniciar sesión",
   "haveNoAccount": "¿No tienes una cuenta?",
-  "signUpText": "Regístrate"
+  "signUpText": "Regístrate",
+  "userDoesntExistText": "El usuario no existe",
+  "wrongPasswordText": "Contraseña incorrecta",
+  "maxLength": "Máximo de carácteres permitidos",
+  "minLength": "Mínimo de carácteres permitidos"
 }

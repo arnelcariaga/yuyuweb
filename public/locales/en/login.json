@@ -6,5 +6,9 @@
   "passwordLabel": "Password",
   "loginText": "Log in",
   "haveNoAccount": "New user?",
-  "signUpText": "Sign up"
+  "signUpText": "Sign up",
+  "userDoesntExistText": "The user does not exist",
+  "wrongPasswordText": "Wrong password",
+  "maxLength": "Maximum characters allowed",
+  "minLength": "Minimum characters allowed"
 }
