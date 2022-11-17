@@ -37,7 +37,9 @@ function SignUp() {
         emailLabel = t("emailLabel"),
         passwordLabel = t("passwordLabel"),
         repeatPasswordLabel = t("repeatPasswordLabel"),
-        passwordDontMatch = t("passwordDontMatch");
+        passwordDontMatch = t("passwordDontMatch"),
+        userAlreadyExist = t("userAlreadyExist"),
+        userSignUpSuccessfully = t("userSignUpSuccessfully");
 
     async function onSubmit(data) {
         setDisableRegisterBtn(true)
@@ -56,11 +58,11 @@ function SignUp() {
 
         const resData = await response.json()
         if (resData.status === "error") {
-            setRegisterStatus(resData.error)
+            setRegisterStatus(userAlreadyExist)
             setOpenToastError(true)
             setDisableRegisterBtn(false)
         } else {
-            alert("Registro con éxito")
+            alert(userSignUpSuccessfully)
             router.push('/')
         }
     }

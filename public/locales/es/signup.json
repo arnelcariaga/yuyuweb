@@ -10,5 +10,7 @@
   "emailLabel": "Correo electrónico",
   "passwordLabel": "Contraseña",
   "repeatPasswordLabel": "Repetir contraseña",
-  "passwordDontMatch": "Las contraseñas no coinciden"
+  "passwordDontMatch": "Las contraseñas no coinciden",
+  "userAlreadyExist": "El usuario ya existe",
+  "userSignUpSuccessfully": "Usuario registrado con éxito"
 }

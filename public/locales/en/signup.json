@@ -10,5 +10,7 @@
   "emailLabel": "Email address",
   "passwordLabel": "Password",
   "repeatPasswordLabel": "Repeat password",
-  "passwordDontMatch": "Password don't match"
+  "passwordDontMatch": "Password don't match",
+  "userAlreadyExist": "User already exist",
+  "userSignUpSuccessfully": "User registered successfully"
 }

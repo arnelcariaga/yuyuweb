@@ -18,7 +18,7 @@ async function handler(req, res) {
     } catch (err) {
       res.json({
         status: "error",
-        error: "Usuario ya existe o error en el servidor.",
+        error: "",
         data: err,
       });
     }
