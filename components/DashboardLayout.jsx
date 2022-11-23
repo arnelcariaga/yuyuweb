@@ -1,6 +1,5 @@
 import Container from 'react-bootstrap/Container';
 import Head from 'next/head';
-import Logo from './Logo'
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Footer from './Footer';
@@ -17,9 +16,12 @@ function Layout({ children, title }) {
                 <Col md={12}>
                     <ChangeLocale />
                 </Col>
-                <Logo />
-                {children}
-                <Footer />
+                <Col md={12}>
+                    {children}
+                </Col>
+                <Col md={12}>
+                    <Footer />
+                </Col>
             </Row>
         </Container>
     </>
