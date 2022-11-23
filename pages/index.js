@@ -83,102 +83,100 @@ function Index() {
         </Toast>
       </ToastContainer>
 
-      <Col md={6}>
-        <h1 className="text-white fs-2">
-          <IconContext.Provider value={{ size: "2em", className: "me-3" }}>
-            <FaCpanel />
-          </IconContext.Provider>
-          {headTitle}
-        </h1>
-        <Form
-          className="fw-semibold text-muted mt-3 bg-white p-3 rounded-3 shadow-lg"
-          noValidate
-          autoComplete="off"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="basic-addon1">
-              <FaEnvelopeOpenText />
-            </InputGroup.Text>
-            <Form.Floating>
-              <Form.Control
-                id="email"
-                type="email"
-                placeholder={emailLabel}
-                isInvalid={errors.email}
-                {...register("email", {
-                  required: requiredMsg,
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: wrongEmailErrorMsg,
-                  },
-                })}
-              />
-              <label htmlFor="email">{emailLabel}</label>
-            </Form.Floating>
+      <h1 className="text-white fs-2">
+        <IconContext.Provider value={{ size: "2em", className: "me-3" }}>
+          <FaCpanel />
+        </IconContext.Provider>
+        {headTitle}
+      </h1>
+      <Form
+        className="fw-semibold text-muted mt-3 bg-white p-3 rounded-3 shadow-lg"
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <InputGroup className="mb-3">
+          <InputGroup.Text id="basic-addon1">
+            <FaEnvelopeOpenText />
+          </InputGroup.Text>
+          <Form.Floating>
+            <Form.Control
+              id="email"
+              type="email"
+              placeholder={emailLabel}
+              isInvalid={errors.email}
+              {...register("email", {
+                required: requiredMsg,
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: wrongEmailErrorMsg,
+                },
+              })}
+            />
+            <label htmlFor="email">{emailLabel}</label>
+          </Form.Floating>
 
-            <Form.Control.Feedback
-              type="invalid"
-              className={errors?.email && "d-block"}
+          <Form.Control.Feedback
+            type="invalid"
+            className={errors?.email && "d-block"}
+          >
+            {errors.email && errors.email.message}
+          </Form.Control.Feedback>
+        </InputGroup>
+
+        <InputGroup className="mb-3">
+          <InputGroup.Text id="basic-addon1">
+            <FaLock />
+          </InputGroup.Text>
+          <Form.Floating>
+            <Form.Control
+              id="password"
+              type="password"
+              placeholder={passwordLabel}
+              isInvalid={errors.password}
+              {...register("password", {
+                required: requiredMsg,
+                maxLength: 10,
+                minLength: 6,
+              })}
+            />
+            <label htmlFor="password">{passwordLabel}</label>
+          </Form.Floating>
+
+          <Form.Control.Feedback
+            type="invalid"
+            className={errors?.password && "d-block"}
+          >
+            {(errors.password && errors.password.message) ||
+              (errors.password?.type === "maxLength" && (
+                <span>{maxLength} 10</span>
+              )) ||
+              (errors.password?.type === "minLength" && (
+                <span>{minLength} 6</span>
+              ))}
+          </Form.Control.Feedback>
+        </InputGroup>
+
+        <Row className="mb-3 align-items-center">
+          <Col md={6}>
+            <Button
+              variant="info"
+              className="fw-semibold text-white"
+              type="submit"
+              disabled={disableLoginBtn}
             >
-              {errors.email && errors.email.message}
-            </Form.Control.Feedback>
-          </InputGroup>
+              {loginText}
+            </Button>
+          </Col>
 
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="basic-addon1">
-              <FaLock />
-            </InputGroup.Text>
-            <Form.Floating>
-              <Form.Control
-                id="password"
-                type="password"
-                placeholder={passwordLabel}
-                isInvalid={errors.password}
-                {...register("password", {
-                  required: requiredMsg,
-                  maxLength: 10,
-                  minLength: 6,
-                })}
-              />
-              <label htmlFor="password">{passwordLabel}</label>
-            </Form.Floating>
-
-            <Form.Control.Feedback
-              type="invalid"
-              className={errors?.password && "d-block"}
-            >
-              {(errors.password && errors.password.message) ||
-                (errors.password?.type === "maxLength" && (
-                  <span>{maxLength} 10</span>
-                )) ||
-                (errors.password?.type === "minLength" && (
-                  <span>{minLength} 6</span>
-                ))}
-            </Form.Control.Feedback>
-          </InputGroup>
-
-          <Row className="mb-3 align-items-center">
-            <Col md={6}>
-              <Button
-                variant="info"
-                className="fw-semibold text-white"
-                type="submit"
-                disabled={disableLoginBtn}
-              >
-                {loginText}
-              </Button>
-            </Col>
-
-            <Col md={6} className="text-end">
-              <span>{haveNoAccount}</span>{" "}
-              <Link href="/signup" passHref>
-                <a href="#">{signUpText}</a>
-              </Link>
-            </Col>
-          </Row>
-        </Form>
-      </Col>
+          <Col md={6} className="text-end">
+            <span>{haveNoAccount}</span>{" "}
+            <Link href="/signup" passHref>
+              <a href="#">{signUpText}</a>
+            </Link>
+          </Col>
+        </Row>
+      </Form>
     </JoinLayout>
   );
 }

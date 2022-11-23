@@ -79,137 +79,133 @@ function SignUp() {
                     <Toast.Body className='text-white'>{registerStatus}</Toast.Body>
                 </Toast>
             </ToastContainer>
+            <Form
+                className="fw-semibold text-muted mt-3 bg-white p-3 rounded-3 shadow-lg"
+                noValidate
+                autoComplete="off"
+                onSubmit={handleSubmit(onSubmit)}
+            >
+                <InputGroup className="mb-3" hasValidation>
+                    <InputGroup.Text id="basic-addon1"><FaUserAlt /></InputGroup.Text>
+                    <Form.Floating>
+                        <Form.Control
+                            id="username"
+                            type="text"
+                            placeholder={usernameLabel}
+                            {...register("username", {
+                                required: requiredMsg,
+                                maxLength: 20,
+                                minLength: 5
+                            })}
+                            isInvalid={errors.username}
+                        />
+                        <label htmlFor="username">{usernameLabel}</label>
+                    </Form.Floating>
 
-            <Col md={6}>
-                <Form
-                    className="fw-semibold text-muted mt-3 bg-white p-3 rounded-3 shadow-lg"
-                    noValidate
-                    autoComplete="off"
-                    onSubmit={handleSubmit(onSubmit)}
-                >
-                    <InputGroup className="mb-3" hasValidation>
-                        <InputGroup.Text id="basic-addon1"><FaUserAlt /></InputGroup.Text>
-                        <Form.Floating>
-                            <Form.Control
-                                id="username"
-                                type="text"
-                                placeholder={usernameLabel}
-                                {...register("username", {
-                                    required: requiredMsg,
-                                    maxLength: 20,
-                                    minLength: 5
-                                })}
-                                isInvalid={errors.username}
-                            />
-                            <label htmlFor="username">{usernameLabel}</label>
-                        </Form.Floating>
-
-                        <Form.Control.Feedback type="invalid" className={errors?.username && "d-block"}>
-                            {
-                                errors.username &&
-                                errors.username.message ||
-                                errors.username?.type === "maxLength" && <span>{maxLength} 20</span> ||
-                                errors.username?.type === "minLength" && <span>{minLength} 5</span>
-                            }
-                        </Form.Control.Feedback>
-                    </InputGroup>
+                    <Form.Control.Feedback type="invalid" className={errors?.username && "d-block"}>
+                        {
+                            errors.username &&
+                            errors.username.message ||
+                            errors.username?.type === "maxLength" && <span>{maxLength} 20</span> ||
+                            errors.username?.type === "minLength" && <span>{minLength} 5</span>
+                        }
+                    </Form.Control.Feedback>
+                </InputGroup>
 
 
-                    <InputGroup className="mb-3">
-                        <InputGroup.Text id="basic-addon1"><FaEnvelopeOpenText /></InputGroup.Text>
-                        <Form.Floating>
-                            <Form.Control
-                                id="email"
-                                type="email"
-                                isInvalid={errors.email}
-                                placeholder="name@example.com"
-                                {...register("email", {
-                                    required: requiredMsg,
-                                    pattern: {
-                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                        message: wrongEmailErrorMsg
-                                    }
-                                })}
-                            />
-                            <label htmlFor="email">{emailLabel}</label>
-                        </Form.Floating>
+                <InputGroup className="mb-3">
+                    <InputGroup.Text id="basic-addon1"><FaEnvelopeOpenText /></InputGroup.Text>
+                    <Form.Floating>
+                        <Form.Control
+                            id="email"
+                            type="email"
+                            isInvalid={errors.email}
+                            placeholder="name@example.com"
+                            {...register("email", {
+                                required: requiredMsg,
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                    message: wrongEmailErrorMsg
+                                }
+                            })}
+                        />
+                        <label htmlFor="email">{emailLabel}</label>
+                    </Form.Floating>
 
-                        <Form.Control.Feedback type="invalid" className={errors?.email && "d-block"}>
-                            {errors.email && errors.email.message}
-                        </Form.Control.Feedback>
-                    </InputGroup>
+                    <Form.Control.Feedback type="invalid" className={errors?.email && "d-block"}>
+                        {errors.email && errors.email.message}
+                    </Form.Control.Feedback>
+                </InputGroup>
 
-                    <InputGroup className="mb-3">
-                        <InputGroup.Text id="basic-addon1"><FaLock /></InputGroup.Text>
-                        <Form.Floating>
-                            <Form.Control
-                                id="password"
-                                type="password"
-                                placeholder={passwordLabel}
-                                isInvalid={errors.password}
-                                {...register("password", {
-                                    required: requiredMsg,
-                                    maxLength: 10,
-                                    minLength: 6
-                                })}
-                            />
-                            <label htmlFor="password">{passwordLabel}</label>
-                        </Form.Floating>
+                <InputGroup className="mb-3">
+                    <InputGroup.Text id="basic-addon1"><FaLock /></InputGroup.Text>
+                    <Form.Floating>
+                        <Form.Control
+                            id="password"
+                            type="password"
+                            placeholder={passwordLabel}
+                            isInvalid={errors.password}
+                            {...register("password", {
+                                required: requiredMsg,
+                                maxLength: 10,
+                                minLength: 6
+                            })}
+                        />
+                        <label htmlFor="password">{passwordLabel}</label>
+                    </Form.Floating>
 
-                        <Form.Control.Feedback type="invalid" className={errors?.password && "d-block"}>
-                            {
-                                errors.password &&
-                                errors.password.message ||
-                                errors.password?.type === "maxLength" && <span>{maxLength} 10</span> ||
-                                errors.password?.type === "minLength" && <span>{minLength} 6</span>
-                            }
-                        </Form.Control.Feedback>
-                    </InputGroup>
+                    <Form.Control.Feedback type="invalid" className={errors?.password && "d-block"}>
+                        {
+                            errors.password &&
+                            errors.password.message ||
+                            errors.password?.type === "maxLength" && <span>{maxLength} 10</span> ||
+                            errors.password?.type === "minLength" && <span>{minLength} 6</span>
+                        }
+                    </Form.Control.Feedback>
+                </InputGroup>
 
-                    <InputGroup className="mb-3">
-                        <InputGroup.Text id="basic-addon1"><FaLock /></InputGroup.Text>
-                        <Form.Floating>
-                            <Form.Control
-                                id="repeatPassword"
-                                type="password"
-                                placeholder={repeatPasswordLabel}
-                                isInvalid={errors.repeatPassword}
-                                {...register("repeatPassword", {
-                                    required: requiredMsg,
-                                    validate: (value) => value === watch('password') || passwordDontMatch,
-                                    maxLength: 10,
-                                    minLength: 6
-                                })}
-                            />
-                            <label htmlFor="repeatPassword">{repeatPasswordLabel}</label>
-                        </Form.Floating>
+                <InputGroup className="mb-3">
+                    <InputGroup.Text id="basic-addon1"><FaLock /></InputGroup.Text>
+                    <Form.Floating>
+                        <Form.Control
+                            id="repeatPassword"
+                            type="password"
+                            placeholder={repeatPasswordLabel}
+                            isInvalid={errors.repeatPassword}
+                            {...register("repeatPassword", {
+                                required: requiredMsg,
+                                validate: (value) => value === watch('password') || passwordDontMatch,
+                                maxLength: 10,
+                                minLength: 6
+                            })}
+                        />
+                        <label htmlFor="repeatPassword">{repeatPasswordLabel}</label>
+                    </Form.Floating>
 
-                        <Form.Control.Feedback type="invalid" className={errors?.repeatPassword && "d-block"}>
-                            {
-                                errors.repeatPassword && errors.repeatPassword.message ||
-                                errors.repeatPassword?.type === "maxLength" && <span>{maxLength} 10</span> ||
-                                errors.repeatPassword?.type === "minLength" && <span>{minLength} 5</span>
-                            }
-                        </Form.Control.Feedback>
-                    </InputGroup>
+                    <Form.Control.Feedback type="invalid" className={errors?.repeatPassword && "d-block"}>
+                        {
+                            errors.repeatPassword && errors.repeatPassword.message ||
+                            errors.repeatPassword?.type === "maxLength" && <span>{maxLength} 10</span> ||
+                            errors.repeatPassword?.type === "minLength" && <span>{minLength} 5</span>
+                        }
+                    </Form.Control.Feedback>
+                </InputGroup>
 
-                    <Row className="mb-3 align-items-center">
-                        <Col md={6}>
-                            <Button variant="info" className="fw-semibold text-white" type="submit" disabled={disableRegisterBtn}>
-                                {signUpText}
-                            </Button>
-                        </Col>
+                <Row className="mb-3 align-items-center">
+                    <Col md={6}>
+                        <Button variant="info" className="fw-semibold text-white" type="submit" disabled={disableRegisterBtn}>
+                            {signUpText}
+                        </Button>
+                    </Col>
 
-                        <Col md={6} className="text-end">
-                            <span>{alreadyHaveAccountText}</span>{" "}
-                            <Link href="/" passHref>
-                                <a href="#">{logInText}</a>
-                            </Link>
-                        </Col>
-                    </Row>
-
-                </Form>
-            </Col>
+                    <Col md={6} className="text-end">
+                        <span>{alreadyHaveAccountText}</span>{" "}
+                        <Link href="/" passHref>
+                            <a href="#">{logInText}</a>
+                        </Link>
+                    </Col>
+                </Row>
+            </Form>
         </JoinLayout>
     );
 }
