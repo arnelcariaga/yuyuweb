@@ -17,9 +17,15 @@ function Layout({ children, title }) {
                 <Col md={12}>
                     <ChangeLocale />
                 </Col>
-                <Logo />
-                {children}
-                <Footer />
+                <Col md={6}>
+                    <Logo />
+                </Col>
+                <Col md={6}>
+                    {children}
+                </Col>
+                <Col md={12}>
+                    <Footer />
+                </Col>
             </Row>
         </Container>
     </>
