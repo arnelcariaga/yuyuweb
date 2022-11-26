@@ -7,13 +7,13 @@ import { getSession } from "next-auth/react";
 import DashboardLayout from "./../../components/DashboardLayout"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
-import LeftDashboardNavs from "../../components/LeftDashboardNavs";
+import TranslationsForm from "../../components/TranslationsForm";
 function Dashboard() {
     const { t } = useTranslation("common");
 
     return (
         <DashboardLayout title="Panel de control">
-            <LeftDashboardNavs />
+            <TranslationsForm />
         </DashboardLayout>
     );
 }
