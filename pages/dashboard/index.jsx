@@ -13,6 +13,7 @@ function Dashboard() {
 
     return (
         <DashboardLayout title="Panel de control">
+            <h3>Panel de control</h3>
             <TranslationsForm />
         </DashboardLayout>
     );
