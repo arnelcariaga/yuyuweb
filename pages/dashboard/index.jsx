@@ -13,7 +13,7 @@ function Dashboard() {
 
     return (
         <DashboardLayout title="Panel de control">
-            <h3 className="text-white fw-bold fs-1">Panel de control</h3>
+            <h3 className="text-white fw-bold display-6">Panel de control</h3>
             <TranslationsForm />
         </DashboardLayout>
     );
