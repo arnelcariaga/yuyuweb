@@ -13,7 +13,7 @@ function Dashboard() {
     const mainForm = () => {
         switch (step) {
             case 1:
-                return <h1>hi</h1>
+                return <h1>ji</h1>
             case 2:
                 return <TranslationsForm />
             default:
