@@ -1,5 +1,5 @@
 import connectDB from "./../../middleware/mongoDB";
-const Lang = require("./../../utils/models/lang.model");
+const Category = require("./../../utils/models/category.model");
 
 async function handler(req, res) {
   connectDB();
@@ -7,13 +7,13 @@ async function handler(req, res) {
   if (req.method === "GET") {
     // Process a POST request
     try {
-      const lang = await Lang.find({});
+      const category = await Category.find({});
 
-      res.json({ status: "ok", error: "nada", data: lang });
+      res.json({ status: "ok", error: "nada", data: category });
     } catch (err) {
       res.json({
         status: "error",
-        error: "Usuario ya existe o error en el servidor.",
+        error: "No category added",
         data: err,
       });
     }
