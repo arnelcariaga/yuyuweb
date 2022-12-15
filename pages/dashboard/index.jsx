@@ -1,4 +1,3 @@
-import React from "react";
 import { getSession } from "next-auth/react";
 import DashboardLayout from "./../../components/DashboardLayout"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -8,22 +7,10 @@ import TranslationsForm from "../../components/TranslationsForm";
 function Dashboard() {
     const { t } = useTranslation("common");
     let controlPanelTitle = t("controlPanelTitle");
-    const [step, setStep] = React.useState(1)
-
-    const mainForm = () => {
-        switch (step) {
-            case 1:
-                return <h1>ji</h1>
-            case 2:
-                return <TranslationsForm />
-            default:
-                return null
-        }
-    }
 
     return (
         <DashboardLayout title={controlPanelTitle}>
-            {mainForm()}
+            <TranslationsForm />
         </DashboardLayout>
     );
 }
