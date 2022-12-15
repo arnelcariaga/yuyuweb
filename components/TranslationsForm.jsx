@@ -13,11 +13,20 @@ import { useForm, useFieldArray } from "react-hook-form";
 import InputsPhrases from "./InputsPhrases"
 import { v4 } from "uuid";
 import { useTranslation } from "next-i18next";
+import { useSelector, useDispatch } from "react-redux";
+import { getCategoriesAction } from "./../Redux/categoriesDucks";
 
 let renderCount = 0;
 
 function TranslationsForm() {
     const [numberOfInput, setNumberOfInput] = React.useState(1)
+    const dispatch = useDispatch();
+    const categories = useSelector((s) => s.categoriesData.categories);
+
+    React.useEffect(() => {
+        dispatch(getCategoriesAction());
+    }, [dispatch]);
+
     const { register, handleSubmit, setValue, formState: { errors }, control } = useForm({
         defaultValues: {
             translationForm: [{
