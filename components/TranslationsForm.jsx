@@ -128,9 +128,9 @@ function TranslationsForm() {
                             })}
                         >
                             <option value="">{selectCategoryLabel}</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            {
+                                categories.map(({ _id, name }) => <option key={i} value={_id}>{name}</option>)
+                            }
                         </Form.Select>
                     </Col>
                 </Row>
