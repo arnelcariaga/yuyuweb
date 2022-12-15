@@ -1,29 +1,29 @@
 // Constants
 const initialData = {
-  langs: [],
+  categories: [],
 };
 
 // types
-const GET_LANGS_SUCCESS = "GET_LANGS_SUCCESS";
+const GET_CATEGORIES_SUCCESS = "GET_CATEGORIES_SUCCESS";
 
 // reducer
 export default function filesReducer(state = initialData, action) {
   switch (action.type) {
-    case GET_LANGS_SUCCESS:
-      return { ...state, langs: action.payload };
+    case GET_CATEGORIES_SUCCESS:
+      return { ...state, categories: action.payload };
     default:
       return state;
   }
 }
 
 // actions
-export const getLangsAction = () => async (dispatch) => {
+export const getCategoriesAction = () => async (dispatch) => {
   try {
-    const fetchLangs = await fetch("/api/allLangs");
-    const langs = await fetchLangs.json();
+    const fetchCategories = await fetch("/api/allCategories");
+    const categories = await fetchCategories.json();
     dispatch({
-      type: GET_LANGS_SUCCESS,
-      payload: langs.data,
+      type: GET_CATEGORIES_SUCCESS,
+      payload: categories.data,
     });
   } catch (error) {
     throw error;
