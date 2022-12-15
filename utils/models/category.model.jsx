@@ -6,7 +6,9 @@ const Categories = new mongoose.Schema(
       type: String,
       required: true,
     }
-  }
+  }, {
+  timestamps: true
+}
 );
 
 mongoose.models = {};
