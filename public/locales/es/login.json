@@ -10,5 +10,6 @@
   "userDoesntExistText": "El usuario no existe",
   "wrongPasswordText": "Contraseña incorrecta",
   "maxLength": "Máximo de carácteres permitidos",
-  "minLength": "Mínimo de carácteres permitidos"
+  "minLength": "Mínimo de carácteres permitidos",
+  "signOutLabel": "Salir"
 }

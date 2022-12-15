@@ -1,26 +1,36 @@
 import React from "react";
-import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row"
 import { getSession } from "next-auth/react";
 import DashboardLayout from "./../../components/DashboardLayout"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import TranslationsForm from "../../components/TranslationsForm";
+
 function Dashboard() {
     const { t } = useTranslation("common");
+    let controlPanelTitle = t("controlPanelTitle");
+    const [step, setStep] = React.useState(1)
+
+    const mainForm = () => {
+        switch (step) {
+            case 1:
+                return <h1>hi</h1>
+            case 2:
+                return <TranslationsForm />
+            default:
+                return null
+        }
+    }
 
     return (
-        <DashboardLayout title="Panel de control">
-            <h3 className="text-white fw-bold display-6">Panel de control</h3>
-            <TranslationsForm />
+        <DashboardLayout title={controlPanelTitle}>
+            {mainForm()}
         </DashboardLayout>
     );
 }
 
-export async function getServerSideProps({ res, locale }) {
-    const session = await getSession(res);
+export async function getServerSideProps(ctx) {
+    let { locale } = ctx
+    const session = await getSession(ctx);
     if (!session) {
         return {
             redirect: {
@@ -34,7 +44,7 @@ export async function getServerSideProps({ res, locale }) {
         props: {
             ...(await serverSideTranslations(locale, [
                 "common",
-                "logo",
+                "login",
                 "footer",
             ])),
         },

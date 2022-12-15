@@ -66,7 +66,7 @@ function Index() {
   }
 
   return (
-    <JoinLayout title="Iniciar sesi&oacute;n">
+    <JoinLayout title={loginText}>
       <ToastContainer className="p-3" position="bottom-start">
         <Toast
           delay={3000}
@@ -181,8 +181,9 @@ function Index() {
   );
 }
 
-export async function getServerSideProps({ res, locale }) {
-  const session = await getSession(res);
+export async function getServerSideProps(ctx) {
+  let { locale } = ctx;
+  const session = await getSession(ctx);
   if (session) {
     return {
       redirect: {
@@ -193,12 +194,7 @@ export async function getServerSideProps({ res, locale }) {
   }
   return {
     props: {
-      ...(await serverSideTranslations(locale, [
-        "common",
-        "logo",
-        "login",
-        "footer",
-      ])),
+      ...(await serverSideTranslations(locale, ["logo", "login", "footer"])),
     },
   };
 }

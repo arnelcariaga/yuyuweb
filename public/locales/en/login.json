@@ -10,5 +10,6 @@
   "userDoesntExistText": "The user does not exist",
   "wrongPasswordText": "Wrong password",
   "maxLength": "Maximum characters allowed",
-  "minLength": "Minimum characters allowed"
+  "minLength": "Minimum characters allowed",
+  "signOutLabel": "Logout"
 }

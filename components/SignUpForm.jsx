@@ -69,7 +69,7 @@ export default function SignUpForm() {
         <ToastContainer className="p-3" position="bottom-start">
             <Toast delay={3000} autohide bg="danger" show={openToastError} onClose={() => setOpenToastError(!openToastError)}>
                 <Toast.Header>
-                    <strong className="me-auto">YuYu | Registro</strong>
+                    <strong className="me-auto">YuYu | {signUpText}</strong>
                     <small>Hace 2 segs.</small>
                 </Toast.Header>
                 <Toast.Body className='text-white'>{registerStatus}</Toast.Body>

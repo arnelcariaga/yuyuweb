@@ -1,3 +1,9 @@
 {
-  "slogan": "Aprende inglés del día a día sin estudiar gramática."
+  "controlPanelTitle": "Panel de control",
+  "translationsFormDescription": "Agrega al menos 2 frases del inglés que se habla y se escucha del día a día y tradúcelas en tu idioma. Es impresindible colocar los audios de como se pronuncia en cada idioma.",
+  "phrase": "Frase",
+  "placeHolderExample": "Por ejemplo",
+  "howDoYouSayIt": "¿Como se dice en tu idioma?",
+  "numberOfPhraseLabel": "Número de frases",
+  "saveTransalationBtn": "Guardar"
 }

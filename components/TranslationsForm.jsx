@@ -2,103 +2,73 @@ import React from "react"
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
-import { FaPlusCircle, FaFileAudio, FaExclamation } from "react-icons/fa"
-import { IconContext } from "react-icons/"
-import { useForm } from "react-hook-form";
+import {
+    FaPlusCircle,
+    FaTrashAlt,
+    FaUndoAlt
+} from "react-icons/fa"
+import { IconContext } from "react-icons"
+import { useForm, useFieldArray } from "react-hook-form";
+import InputsPhrases from "./InputsPhrases"
+import { v4 } from "uuid";
+import { useTranslation } from "next-i18next";
 
-function InputsPhrases({ i, register, errors }) {
-    return <Row className="mb-3">
-        <Form.Group as={Col} controlId={`englishPhrase${i}`}>
-            <Form.Label className="text-muted fw-semibold">Frase {i}</Form.Label>
-            <InputGroup className="mb-3">
-                <Form.Control
-                    placeholder="Por ejemplo: I feel you..."
-                    aria-label={`Frase ${i}`}
-                    isInvalid={errors[`englishPhrase${i}`]}
-                    {...register(`englishPhrase${i}`, {
-                        required: true,
-                        pattern: {
-                            value: /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g,
-                            message: "No se permite este tipo de caracter"
-                        }
-                    })}
-                />
-                <InputGroup.Text className={`bg-light p-0 ${errors[`englishPhraseAudio${i}`] && "border-danger"}`}>
-                    <Button variant="light" className="border-0 rounded-0 position-relative overflow-hidden d-flex align-items-center" type="button">
-                        <IconContext.Provider value={{ className: "fs-5 text-muted" }}>
-                            <FaFileAudio />
-                        </IconContext.Provider>
-                        <Form.Control
-                            type="file"
-                            className="position-absolute end-0 top-0 opacity-0"
-                            {...register(`englishPhraseAudio${i}`, {
-                                required: <FaExclamation />,
-                            })}
-                        />
-                        <Form.Control.Feedback type="invalid" className={errors[`englishPhraseAudio${i}`] && "d-block m-0"}>
-                            {errors[`englishPhraseAudio${i}`] && errors[`englishPhraseAudio${i}`].message}
-                        </Form.Control.Feedback>
-                    </Button>
-
-                </InputGroup.Text>
-                <Form.Control.Feedback type="invalid" className={errors[`englishPhrase${i}`] && "d-block"}>
-                    {errors[`englishPhrase${i}`] && errors[`englishPhrase${i}`].message}
-                </Form.Control.Feedback>
-            </InputGroup>
-        </Form.Group>
-
-        <Form.Group as={Col} controlId={`howToSay${i}`}>
-            <Form.Label className="text-muted fw-semibold">Como se dice en tu idioma?</Form.Label>
-            <InputGroup className="mb-3">
-                <Form.Control
-                    isInvalid={errors[`howToSay${i}`]}
-                    aria-label="Como se dice en tu idioma?"
-                    {...register(`howToSay${i}`, {
-                        required: true,
-                        pattern: {
-                            value: /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g,
-                            message: "No se permite este tipo de caracter"
-                        }
-                    })}
-                />
-                <InputGroup.Text className={`bg-light p-0 ${errors[`howToSayAudio${i}`] && "border-danger"}`}>
-                    <Button variant="light" className="border-0 rounded-0 position-relative overflow-hidden d-flex align-items-center" type="button">
-                        <IconContext.Provider value={{ className: "fs-5 text-muted" }}>
-                            <FaFileAudio />
-                        </IconContext.Provider>
-                        <Form.Control
-                            type="file"
-                            className="position-absolute end-0 top-0 opacity-0"
-                            {...register(`howToSayAudio${i}`, {
-                                required: <FaExclamation />,
-                            })}
-                        />
-                        <Form.Control.Feedback type="invalid" className={errors[`howToSayAudio${i}`] && "d-block m-0"}>
-                            {errors[`howToSayAudio${i}`] && errors[`howToSayAudio${i}`].message}
-                        </Form.Control.Feedback>
-                    </Button>
-                </InputGroup.Text>
-                <Form.Control.Feedback type="invalid" className={errors[`howToSay${i}`] && "d-block"}>
-                    {errors[`howToSay${i}`] && errors[`howToSay${i}`].message}
-                </Form.Control.Feedback>
-            </InputGroup>
-        </Form.Group>
-    </Row>
-}
+let renderCount = 0;
 
 function TranslationsForm() {
     const [numberOfInput, setNumberOfInput] = React.useState(1)
-    const [defaultInput, setDefaultInput] = React.useState([1, 2])
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, setValue, formState: { errors }, control } = useForm({
+        defaultValues: {
+            translationForm: [{
+                id: v4(),
+                default: true,
+                englishPhrase: "",
+                englishPhraseAudio: "",
+                howToSay: "",
+                howToSayAudio: ""
+            }, {
+                id: v4(),
+                default: true,
+                englishPhrase: "",
+                englishPhraseAudio: "",
+                howToSay: "",
+                howToSayAudio: ""
+            }]
+        }
+    });
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "translationForm",
+    });
+    const { t } = useTranslation("common");
+    let translationsFormDescription = t("translationsFormDescription"),
+        numberOfPhraseLabel = t("numberOfPhraseLabel"),
+        saveTransalationBtn = t("saveTransalationBtn");
 
     const addPhraseFunc = () => {
-        let newArray = [...defaultInput];
+        let newArray = [];
         for (let i = 0; i < numberOfInput; i++) {
-            newArray.push(i + 3)
+            newArray.push({
+                id: v4(),
+                englishPhrase: "",
+                englishPhraseAudio: "",
+                howToSay: "",
+                howToSayAudio: ""
+            })
         }
-        setDefaultInput(newArray);
+        append(newArray);
+    }
+
+    const removeField = (i) => {
+        remove(i)
+    }
+
+    const resetField = (i) => {
+        setValue(`translationForm.${i}.englishPhrase`, "")
+        setValue(`translationForm.${i}.englishPhraseAudio`, "")
+        setValue(`translationForm.${i}.howToSay`, "")
+        setValue(`translationForm.${i}.howToSayAudio`, "")
     }
 
     const quantityInputFunc = (e) => {
@@ -107,50 +77,76 @@ function TranslationsForm() {
     }
 
     async function onSubmit(data) {
-
+        console.log(data)
     }
+
+    renderCount++
 
     return (
         <div className="bg-white p-4 rounded shadow">
             <Form
                 noValidate
+                autoComplete="off"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <Row className="mb-3">
                     <Col md={8} className="d-flex flex-direction-row justify-content-between">
-                        <h6 className="text-danger fw-bold">
-                            Agrega al menos 2 frases del ingles que se habla y se escucha del dia a dia y traducelas en tu idioma.
-                            <p>Es impresindible colocar los audios de como se pronuncia en cada idioma.</p>
+                        <h6 className="text-danger fw-bold small">
+                            {translationsFormDescription}
                         </h6>
                     </Col>
 
                     <Col md={4} className="d-flex align-items-center justify-content-end">
-                        <strong className="me-2 text-muted fw-bold">Cantidad de frase:</strong>
-                        <Form.Control type="number" min="1" onChange={quantityInputFunc} defaultValue={1} className="w-25" />
-                        <Button variant="primary" type="button" className="ms-2" onClick={addPhraseFunc}>
+                        <strong className="me-2 text-muted fw-bold small">{numberOfPhraseLabel}:</strong>
+                        <Form.Control type="number" size="sm" min="1" onChange={quantityInputFunc} defaultValue={1} className="w-25" />
+                        <Button variant="primary" size="sm" type="button" className="ms-2" onClick={addPhraseFunc}>
                             <IconContext.Provider value={{ className: "my-1" }}>
                                 <FaPlusCircle />
                             </IconContext.Provider>
                         </Button>
+
                     </Col>
                 </Row>
-
                 {
-                    defaultInput.map(
-                        (e, i) => <InputsPhrases
-                            key={i}
-                            i={i + 1}
-                            register={register}
-                            errors={errors}
-                        />
+                    fields.map(
+                        (item, i) => {
+                            return <div className="d-flex align-items-center" key={i}>
+                                <InputsPhrases
+                                    i={i}
+                                    register={register}
+                                    errors={errors}
+                                />
+                                <div className="d-flex">
+                                    <Button
+                                        variant="primary"
+                                        size="sm"
+                                        type="button"
+                                        className="me-2"
+                                        onClick={() => resetField(i)}
+                                    >
+                                        <FaUndoAlt />
+                                    </Button>
+
+                                    <Button
+                                        variant="danger"
+                                        size="sm"
+                                        type="button"
+                                        disabled={item.default}
+                                        onClick={() => removeField(i)}
+                                    >
+                                        <FaTrashAlt />
+                                    </Button>
+                                </div>
+                            </div>
+                        }
                     )
                 }
 
-                <Button variant="primary" type="submit">
-                    Guardar
+                <Button variant="primary" size="sm" type="submit">
+                    {saveTransalationBtn}
                 </Button>
-            </Form>
-        </div>
+            </Form >
+        </div >
     );
 }
 

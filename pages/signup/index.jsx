@@ -2,10 +2,13 @@ import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import JoinLayout from "../../components/JoinLayout";;
 import SignUpForm from "../../components/SignUpForm"
+import { useTranslation } from "next-i18next";
 
 function SignUp() {
+    const { t } = useTranslation("signup");
+    let signUpText = t("signUpText")
     return (
-        <JoinLayout title="Registrarse">
+        <JoinLayout title={signUpText}>
             <SignUpForm />
         </JoinLayout>
     );
@@ -25,7 +28,6 @@ export async function getServerSideProps({ res, locale }) {
     return {
         props: {
             ...(await serverSideTranslations(locale, [
-                "common",
                 "logo",
                 "signup",
                 "footer",
