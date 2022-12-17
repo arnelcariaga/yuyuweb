@@ -32,7 +32,7 @@ export async function getServerSideProps(ctx) {
             ...(await serverSideTranslations(locale, [
                 "common",
                 "login",
-                "footer",
+                "footer"
             ])),
         },
     }

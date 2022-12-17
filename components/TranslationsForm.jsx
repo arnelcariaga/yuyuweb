@@ -15,6 +15,7 @@ import { v4 } from "uuid";
 import { useTranslation } from "next-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { getCategoriesAction } from "./../Redux/categoriesDucks";
+import { useRouter } from "next/router";
 
 let renderCount = 0;
 
@@ -22,6 +23,7 @@ function TranslationsForm() {
     const [numberOfInput, setNumberOfInput] = React.useState(1)
     const dispatch = useDispatch();
     const categories = useSelector((s) => s.categoriesData.categories);
+    const router = useRouter();
 
     React.useEffect(() => {
         dispatch(getCategoriesAction());
@@ -90,6 +92,12 @@ function TranslationsForm() {
         console.log(data)
     }
 
+    const fecthCategories = () => {
+        const { locale } = router;
+        let newCategory = categories[0][locale]
+        return newCategory.map(({ _id, name }) => <option key={_id}>{name}</option>)
+    }
+
     renderCount++
 
     return (
@@ -128,9 +136,7 @@ function TranslationsForm() {
                             })}
                         >
                             <option value="">{selectCategoryLabel}</option>
-                            {
-                                categories.map(({ _id, name }) => <option key={i} value={_id}>{name}</option>)
-                            }
+                            {fecthCategories()}
                         </Form.Select>
                     </Col>
                 </Row>

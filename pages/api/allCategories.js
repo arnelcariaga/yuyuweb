@@ -13,7 +13,7 @@ async function handler(req, res) {
     } catch (err) {
       res.json({
         status: "error",
-        error: "No category added",
+        error: "server error",
         data: err,
       });
     }
