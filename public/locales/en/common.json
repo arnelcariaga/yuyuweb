@@ -1,10 +1,15 @@
 {
-  "controlPanelTitle": "Control panel",
   "translationsFormDescription": "Add at least 2 phrases in English that is spoken and heard on a daily basis and translate them into your language. It is essential to upload an audio of the designated phrase in each language.",
   "phrase": "Phrase",
   "placeHolderExample": "For example",
   "howDoYouSayIt": "How do you say it in your language?",
   "numberOfPhraseLabel": "Number of phrases",
   "saveTransalationBtn": "Save",
-  "selectCategoryLabel": "Select a category"
+  "selectCategoryLabel": "Select a category",
+  "howDoYouSayItExist": "This phrase already exist",
+  "fileSizeExceded": "File size exceded ",
+  "translationsAddedSuccessFully": "Translations added Successfully",
+  "serverErrorMsg": "Server error",
+  "translations": "Translations",
+  "seeTranslations": "Translations list"
 }

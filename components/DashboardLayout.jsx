@@ -13,7 +13,6 @@ import Dropdown from 'react-bootstrap/Dropdown';
 function Layout({ children, title }) {
     const { t } = useTranslation("common");
     let newTitle = `YuYu || ${title}`,
-        controlPanelTitle = t("controlPanelTitle"),
         signOutLabel = t("signOutLabel", { ns: "login" });
     const { data: session } = useSession()
     return <>
@@ -28,7 +27,7 @@ function Layout({ children, title }) {
                 </Col>
                 <Col md={12}>
                     <div className="d-flex align-items-center justify-content-between">
-                        <h3 className="text-white fw-bold display-6">{controlPanelTitle}</h3>
+                        <h3 className="text-white fw-bold display-6">{newTitle}</h3>
                         <Dropdown as={ButtonGroup}>
                             <Button variant="success">{session?.user.username}</Button>
                             <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />

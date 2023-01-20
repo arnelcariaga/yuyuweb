@@ -1,10 +1,16 @@
 {
-  "controlPanelTitle": "Panel de control",
   "translationsFormDescription": "Agrega al menos 2 frases del inglés que se habla y se escucha del día a día y tradúcelas en tu idioma. Es impresindible colocar los audios de como se pronuncia en cada idioma.",
   "phrase": "Frase",
   "placeHolderExample": "Por ejemplo",
   "howDoYouSayIt": "¿Como se dice en tu idioma?",
   "numberOfPhraseLabel": "Número de frases",
   "saveTransalationBtn": "Guardar",
-  "selectCategoryLabel": "Seleccione una categoría"
+  "selectCategoryLabel": "Seleccione una categoría",
+  "howDoYouSayItExist": "Ya esta frase existe",
+  "onlyMP3Allowed": "Solo se permite archivos MP3",
+  "fileSizeExceded": "Tamaño del audio excede los ",
+  "translationsAddedSuccessFully": "Traducciones agregadas con éxito",
+  "serverErrorMsg": "Error en el servidor",
+  "translations": "Traduciones",
+  "seeTranslations": "Lista de traducciones"
 }

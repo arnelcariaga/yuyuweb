@@ -10,20 +10,24 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import { useTranslation } from "next-i18next";
 
-function InputsPhrases({ i, register, errors }) {
+function InputsPhrases({ i, register, errors, translationsAlreadyExist }) {
     const { t } = useTranslation("common");
     let phrase = t("phrase"),
         placeHolderExample = t("placeHolderExample"),
-        howDoYouSayIt = t("howDoYouSayIt");
+        howDoYouSayIt = t("howDoYouSayIt"),
+        howDoYouSayItExist = t("howDoYouSayItExist"),
+        onlyMP3Allowed = t("onlyMP3Allowed"),
+        fileSizeExceded = t("fileSizeExceded"),
+        counter = i + 1;
 
     return <Row className="mb-3 w-100 me-0">
         <Form.Group as={Col} controlId={i}>
-            <Form.Label className="text-muted fw-semibold">{phrase} {i + 1}</Form.Label>
+            <Form.Label className="text-muted fw-semibold">{phrase} {counter}</Form.Label>
             <InputGroup className="mb-3">
                 <Form.Control
                     placeholder={`${placeHolderExample}: I feel you...`}
                     size="sm"
-                    aria-label={`${howDoYouSayIt} ${i}`}
+                    aria-label={`${phrase} ${counter} `}
                     isInvalid={errors["translationForm"]?.[i]?.englishPhrase}
                     {...register(`translationForm.${i}.englishPhrase`, {
                         required: true,
@@ -92,7 +96,7 @@ function InputsPhrases({ i, register, errors }) {
                     errors["translationForm"]?.[i]?.englishPhraseAudio &&
                     errors["translationForm"]?.[i].englishPhraseAudio.type === "fileSize" &&
                     <Form.Control.Feedback type="invalid" className={errors["translationForm"]?.[i]?.englishPhraseAudio && "d-block"}>
-                        Tamaño del audio excede los 4MB
+                        {fileSizeExceded} 4MB
                     </Form.Control.Feedback>
                 }
                 {
@@ -103,7 +107,6 @@ function InputsPhrases({ i, register, errors }) {
                     </Form.Control.Feedback>
                 }
             </InputGroup>
-
 
         </Form.Group>
 
@@ -124,6 +127,16 @@ function InputsPhrases({ i, register, errors }) {
                             value: 2,
                             message: "Caracteres minimos permitidos es 2"
                         },
+                        validate: {
+                            howDoYouSayAlreadyExist: (v) => {
+                                for (const key in translationsAlreadyExist) {
+                                    const howToSay = translationsAlreadyExist[key]["howToSay"]
+                                    if (howToSay === v) {
+                                        return false
+                                    }
+                                }
+                            }
+                        }
                     })}
                 />
                 <InputGroup.Text className={
@@ -175,14 +188,21 @@ function InputsPhrases({ i, register, errors }) {
                     errors["translationForm"]?.[i]?.howToSayAudio &&
                     errors["translationForm"]?.[i].howToSayAudio.type === "fileSize" &&
                     <Form.Control.Feedback type="invalid" className={errors["translationForm"]?.[i]?.howToSayAudio && "d-block"}>
-                        Tamaño del audio excede los 4MB
+                        {fileSizeExceded} 4MB
                     </Form.Control.Feedback>
                 }
                 {
                     errors["translationForm"]?.[i]?.howToSayAudio &&
                     errors["translationForm"]?.[i].howToSayAudio.type === "fileType" &&
                     <Form.Control.Feedback type="invalid" className={errors["translationForm"]?.[i]?.howToSayAudio && "d-block"}>
-                        Solo se permite archivos MP3
+                        {onlyMP3Allowed}
+                    </Form.Control.Feedback>
+                }
+                {
+                    errors["translationForm"]?.[i]?.howToSay &&
+                    errors["translationForm"]?.[i].howToSay.type === "howDoYouSayAlreadyExist" &&
+                    <Form.Control.Feedback type="invalid" className={errors["translationForm"]?.[i]?.howToSay && "d-block"}>
+                        {howDoYouSayItExist}
                     </Form.Control.Feedback>
                 }
             </InputGroup>
