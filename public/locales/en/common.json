@@ -11,5 +11,8 @@
   "translationsAddedSuccessFully": "Translations added Successfully",
   "serverErrorMsg": "Server error",
   "translations": "Translations",
-  "seeTranslations": "Translations list"
+  "seeTranslations": "Translations list",
+  "addTranslations": "Add translations",
+  "noDataTableFound": "There are no records to display",
+  "phraseTranslatedOnYourLang": "Translated on your language"
 }
