@@ -5,86 +5,77 @@ import { getTranslationsAction } from "./../Redux/translationsDuck";
 import Button from 'react-bootstrap/Button';
 import Link from "next/link";
 import { useTranslation } from "next-i18next";
-import { FaPlayCircle, FaPauseCircle } from "react-icons/fa"
+import AudioPlayer from "./AudioPlayer";
+import moment from "moment"
+import {
+    FaEdit,
+    FaTrash
+} from "react-icons/fa"
 
-const audioInstance = (audio) => {
-    return new Audio(audio);
-}
-
-const Cell = ({ row }) => {
-    const [newData, setNewData] = React.useState([{
-        ...row,
-        isPlaying: false
-    }])
-
-    let audio = new Audio(newData.englishPhraseAudio);
-
-    const playFunction = (id) => {
-        if (audio.paused) {
-            audio.play();
-            const newItem = newData.find(item => item._id === id).isPlaying = !row.isPlaying
-            console.log("newItem", newItem)
-            //setNewData(newItem)
-        } else {
-            audio.pause();
-            const newItem = newData.find(item => item._id === id).isPlaying = !row.isPlaying
+const Cell = ({ row, type }) => {
+    const Element = () => {
+        if (type === "englishPhrase") {
+            return <>
+                {row.englishPhrase}
+                <AudioPlayer url={row.englishPhraseAudio} />
+            </>
+        } else if (type === "howToSay") {
+            return <>
+                {row.howToSay}
+                <AudioPlayer url={row.howToSayAudio} />
+            </>
         }
     }
-
-    console.log(newData)
-
-    return <div className="d-flex align-items-center" data-tag="allowRowEvents">
-        {row.englishPhrase}
-        <Button
-            variant="default"
-            type="button"
-            className="rounded-circle p-0 ms-2"
-            data-tag="allowRowEvents"
-            onClick={() => playFunction(row._id)}>
-            klk
-            {
-                //newRowData.isPlaying ? <FaPauseCircle /> : <FaPlayCircle />
-            }
-        </Button>
+    return <div className="d-flex align-items-center">
+        <Element />
     </div>
 }
 
 const Columns = (t) => {
     let phrase = t("phrase"),
         phraseTranslatedOnYourLang = t("phraseTranslatedOnYourLang");
-
-    const data = [
+    const columns = [
         {
             name: phrase,
             sortable: true,
-            cell: (row) => <Cell row={row} />
+            selector: (row) => row.englishPhrase,
+            cell: (row) => <Cell type="englishPhrase" row={row} />
         },
         {
             name: phraseTranslatedOnYourLang,
             sortable: true,
-            cell: (row, index, column, id) => {
-                var audio = new Audio(row.howToSayAudio);
-                return <div className="d-flex align-items-center">
-                    {row.englishPhrase}
-                    <Button
-                        variant="default"
-                        type="button"
-                        className="rounded-circle p-0 ms-2"
-                        onClick={() => {
-                            if (audio.paused) {
-                                audio.play();
-                            } else {
-                                audio.pause();
-                            }
-                        }}>
-                        <FaPlayCircle />
-                    </Button>
-                </div>
+            selector: (row) => row.howToSay,
+            cell: (row) => <Cell type="howToSay" row={row} />
+        },
+        {
+            name: "Categoria",
+            sortable: true,
+            selector: (row) => row.category[0]._id,
+            cell: (row) => row.category[0].name
+        },
+        {
+            name: "Agregado por",
+            sortable: true,
+            selector: (row) => row.addedBy[0].username + `(${row.addedBy[0].userType === 2 ? "Admin" : "Usuario"})`
+        },
+        {
+            name: "Agregado el",
+            sortable: true,
+            selector: (row) => row.createdAt,
+            format: (row) => moment(row.createdAt).format('DD/MM/YYYY, h:mm a')
+        },
+        {
+            name: "Acciones",
+            sortable: true,
+            cell: (row) => {
+                return <>
+                    <Button variant="success" size="sm" className="me-2"><FaEdit /></Button>
+                    <Button variant="danger" size="sm"><FaTrash /></Button>
+                </>
             }
         },
     ];
-
-    return data
+    return { columns }
 }
 
 function TranslationsDataTable() {
@@ -93,8 +84,7 @@ function TranslationsDataTable() {
     const { t } = useTranslation("common");
     let addTranslations = t("addTranslations"),
         noDataTableFound = t("noDataTableFound");
-
-    const [audios, setAudios] = React.useState([])
+    const { columns } = Columns(t)
 
     React.useEffect(() => {
         dispatch(getTranslationsAction());
@@ -108,9 +98,10 @@ function TranslationsDataTable() {
         </Link>
 
         <DataTable
-            columns={Columns(t)}
+            columns={columns}
             data={translations}
             noDataComponent={noDataTableFound}
+            pagination
         />
     </>
 }
