@@ -21,14 +21,35 @@ const Translation = new mongoose.Schema(
             type: String,
             required: true
         },
-        category: {
-            type: mongoose.Types.ObjectId,
-            required: true
-        },
-        userId: {
-            type: mongoose.Types.ObjectId,
-            required: true
-        }
+        category: [{
+            _id: {
+                type: mongoose.Types.ObjectId,
+                required: true
+            },
+            name: {
+                type: String,
+                required: true
+            }
+        }],
+        addedBy: [{
+            userId: {
+                type: mongoose.Types.ObjectId,
+                required: true
+            },
+            userType: {
+                type: Number,
+                required: true
+            },
+            username: {
+                type: String,
+                required: true,
+            },
+            email: {
+                type: String,
+                required: true
+            }
+        }]
+
     }, {
     timestamps: true
 }
