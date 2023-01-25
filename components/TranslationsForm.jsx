@@ -142,7 +142,7 @@ function TranslationsForm() {
     const fecthCategories = () => {
         const { locale } = router;
         let newCategory = categories.length > 0 && categories[0][locale]
-        return newCategory.length > 0 && newCategory.map(({ _id, name }) => <option key={_id} value={_id}>{name}</option>)
+        return newCategory.length > 0 && newCategory.map(({ _id, name }) => <option key={_id} value={JSON.stringify({ _id, name })} >{name}</option>)
     }
 
     renderCount++
