@@ -12,7 +12,7 @@ export const config = {
   },
 };
 
-const uploadTranslation = (req, userId) => {
+const uploadTranslation = (req, userId, userType, email, username) => {
   return new Promise((resolve, reject) => {
     const form = new formidable.IncomingForm({
       keepExtensions: true,
@@ -24,7 +24,8 @@ const uploadTranslation = (req, userId) => {
       const { category, translationForm } = fields,
         translationFormToJSON = JSON.parse(translationForm);
       let translationsAlreadyExist = [],
-        addedTranslations = [];
+        addedTranslations = [],
+        parseCategoryToJSON = JSON.parse(category);
 
       for (const key in translationFormToJSON) {
         const data = translationFormToJSON[key],
@@ -41,8 +42,20 @@ const uploadTranslation = (req, userId) => {
               "/audios/" + files["englishPhraseAudio"][key]["newFilename"],
             howToSayAudio:
               "/audios/" + files["howToSayAudio"][key]["newFilename"],
-            category,
-            userId,
+            category: [
+              {
+                _id: parseCategoryToJSON._id,
+                name: parseCategoryToJSON.name,
+              },
+            ],
+            addedBy: [
+              {
+                userId,
+                userType,
+                email,
+                username,
+              },
+            ],
           };
           const addTranslation = await Translation.create(newData);
           addedTranslations.push({ ...addTranslation });
@@ -111,11 +124,20 @@ const saveFile = (file) => {
 async function handler(req, res) {
   connectDB();
   const session = await getSession(res);
-  const userId = session.user.id;
+  const userId = session.user.id,
+    userType = session.user.userType,
+    email = session.user.email,
+    username = session.user.username;
 
   if (req.method === "POST") {
     try {
-      const translation = await uploadTranslation(req, userId);
+      const translation = await uploadTranslation(
+        req,
+        userId,
+        userType,
+        email,
+        username
+      );
 
       res.json({
         status: "error",
