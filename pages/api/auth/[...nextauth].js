@@ -32,6 +32,7 @@ export default NextAuth({
             email: user.email,
             createdAt: user.createdAt,
             id: user._id,
+            userType: user.userType,
           };
         } else {
           throw new Error("invalid_password");
