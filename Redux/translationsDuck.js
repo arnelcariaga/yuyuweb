@@ -19,7 +19,7 @@ export default function filesReducer(state = initialData, action) {
 // actions
 export const getTranslationsAction = () => async (dispatch) => {
   try {
-    const fetchTranslations = await fetch("/api/allTranslations");
+    const fetchTranslations = await fetch("/api/translations");
     const translations = await fetchTranslations.json();
     dispatch({
       type: GET_TRANSLATIONS_SUCCESS,
