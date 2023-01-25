@@ -13,6 +13,7 @@ async function handler(req, res) {
         username: req.body.username,
         email: req.body.email,
         password: newPassword,
+        userType: 1,
       });
       res.json({ status: "ok", error: "nada", data: newUser });
     } catch (err) {
