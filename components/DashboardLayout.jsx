@@ -27,9 +27,9 @@ function Layout({ children, title }) {
                 </Col>
                 <Col md={12}>
                     <div className="d-flex align-items-center justify-content-between">
-                        <h3 className="text-white fw-bold display-6">{newTitle}</h3>
+                        <h3 className="text-white fw-bold">{newTitle}</h3>
                         <Dropdown as={ButtonGroup}>
-                            <Button variant="success">{session?.user.username}</Button>
+                            <Button variant="success" size='sm'>{session?.user.username}</Button>
                             <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
                             <Dropdown.Menu>
                                 <Dropdown.Item onClick={() => signOut()}>{signOutLabel}</Dropdown.Item>
