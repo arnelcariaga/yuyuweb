@@ -23,6 +23,7 @@ function ChangeLocale() {
         aria-label="Seleccionar idioma"
         className='w-auto shadow-lg'
         value={router.locale}
+        size="sm"
         onChange={onToggleLanguageClick}>
         {langs.map(({ _id, name, abb }) => <option key={_id} value={abb}>{name}</option>)}
     </Form.Select>
