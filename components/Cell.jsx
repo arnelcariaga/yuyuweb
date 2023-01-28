@@ -6,42 +6,21 @@ import AudioPlayer from "./AudioPlayer";
 import { useSelector, useDispatch } from "react-redux";
 import { getCategoriesAction } from "./../Redux/categoriesDucks";
 
-const EditCell = ({ type, row }) => {
-    const dispatch = useDispatch();
-    const categories = useSelector((s) => s.categoriesData.categories);
-    const router = useRouter();
-
-    React.useEffect(() => {
-        dispatch(getCategoriesAction());
-    }, [dispatch]);
-
+const EditCell = ({ type, row, categories, locale }) => {
     const fecthCategories = () => {
-        const { locale } = router;
         let newCategory = categories.length > 0 && categories[0][locale]
-        return newCategory.length > 0 && newCategory.map(({ _id, name }) => <option key={_id} value={_id} >{name}</option>)
+        return newCategory.length > 0 && newCategory.map(({ _id, name, index }) => <option key={_id} data-id={_id} value={index} >{name}</option>)
     }
 
     if (type === "englishPhrase") {
-        return <FloatingLabel
-            controlId="floatingInput"
-            label="Frase"
-            className="m-1"
-        >
-            <Form.Control size='sm' type="text" value={row.englishPhrase} />
-        </FloatingLabel>
+        return <Form.Control size='sm' type="text" value={row.englishPhrase} />
     } else if (type === "howToSay") {
-        return <FloatingLabel
-            controlId="floatingInput"
-            label="Como se dice en tu idioma"
-            className="m-1"
-        >
-            <Form.Control size='sm' type="text" value={row.englishPhrase} />
-        </FloatingLabel>
+        return <Form.Control size='sm' type="text" value={row.englishPhrase} />
     } else if (type === "category") {
         return <Form.Select
             aria-label="Categoria"
             className='w-auto'
-            defaultValue={row.category[0]._id}
+            value={row.category[0].index}
             size="sm"
             onChange={() => { }}>
             {fecthCategories()}
@@ -50,7 +29,7 @@ const EditCell = ({ type, row }) => {
 
 }
 
-const DefaultCell = ({ type, row }) => {
+const DefaultCell = ({ type, row, categories, locale }) => {
     if (type === "englishPhrase") {
         return <>
             {row.englishPhrase}
@@ -62,15 +41,23 @@ const DefaultCell = ({ type, row }) => {
             <AudioPlayer url={row.howToSayAudio} />
         </>
     } else if (type === "category") {
-        return row.category[0].name
+        let newCategory = categories.length > 0 && categories[0][locale]
+        return newCategory.length > 0 && newCategory.map(({index, name}) => index === row.category[0].index && name)
     } else {
         return null
     }
 }
 
-
-
 function Cell({ type, row, index, editting }) {
+    const dispatch = useDispatch();
+    const categories = useSelector((s) => s.categoriesData.categories);
+    const router = useRouter();
+    const { locale } = router;
+
+    React.useEffect(() => {
+        dispatch(getCategoriesAction());
+    }, [dispatch]);
+
     return <div className="d-flex align-items-center">
         {
             index === editting?.i &&
@@ -78,8 +65,12 @@ function Cell({ type, row, index, editting }) {
                 <EditCell
                     type={type}
                     row={editting.r}
+                    categories={categories}
+                    locale={locale}
                 /> :
                 <DefaultCell
+                categories={categories}
+                locale={locale}
                     type={type}
                     row={row}
                 />
