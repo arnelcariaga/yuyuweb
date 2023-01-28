@@ -46,6 +46,7 @@ const uploadTranslation = (req, userId, userType, email, username) => {
               {
                 _id: parseCategoryToJSON._id,
                 name: parseCategoryToJSON.name,
+                index: parseCategoryToJSON.index,
               },
             ],
             addedBy: [
