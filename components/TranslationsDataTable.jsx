@@ -9,7 +9,9 @@ import moment from "moment"
 import Cell from "./Cell";
 import {
     FaEdit,
-    FaTrash
+    FaTrash,
+    FaRegWindowClose,
+    FaRegSave
 } from "react-icons/fa"
 
 function TranslationsDataTable() {
@@ -59,6 +61,12 @@ function TranslationsDataTable() {
         {
             name: "Acciones",
             cell: (r, i) => {
+                if(editting?.i === i){
+                    return <div className="m-1">
+                    <Button variant="outline-success" size="sm" className="me-2" onClick={() => {}}><FaRegSave /></Button>
+                    <Button variant="outline-danger" size="sm"><FaRegWindowClose /></Button>
+                </div>
+                }
                 return <div className="m-1">
                     <Button variant="success" size="sm" className="me-2" onClick={() => setEditting({ r, i })}><FaEdit /></Button>
                     <Button variant="danger" size="sm"><FaTrash /></Button>
