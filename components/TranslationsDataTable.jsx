@@ -61,11 +61,11 @@ function TranslationsDataTable() {
         {
             name: "Acciones",
             cell: (r, i) => {
-                if(editting?.i === i){
+                if (editting?.i === i) {
                     return <div className="m-1">
-                    <Button variant="outline-success" size="sm" className="me-2" onClick={() => {}}><FaRegSave /></Button>
-                    <Button variant="outline-danger" size="sm"><FaRegWindowClose /></Button>
-                </div>
+                        <Button variant="outline-success" size="sm" className="me-2" onClick={() => { }}><FaRegSave /></Button>
+                        <Button variant="outline-danger" size="sm"><FaRegWindowClose /></Button>
+                    </div>
                 }
                 return <div className="m-1">
                     <Button variant="success" size="sm" className="me-2" onClick={() => setEditting({ r, i })}><FaEdit /></Button>
@@ -90,6 +90,7 @@ function TranslationsDataTable() {
             fixedHeader
             highlightOnHover
             dense
+            defaultSortAsc={translations.length !== 0 ? false : true}
         />
     </>
 }
