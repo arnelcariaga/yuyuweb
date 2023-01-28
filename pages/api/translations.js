@@ -14,10 +14,8 @@ async function handler(req, res) {
 
       const translations =
         userType === 2
-          ? await Translation.find({}).sort({ createdAt: -1 })
-          : await Translation.find({ "addedBy.userId": userId }).sort({
-              createdAt: -1,
-            });
+          ? await Translation.find({})
+          : await Translation.find({ "addedBy.userId": userId });
 
       res.json({
         status: "ok",
