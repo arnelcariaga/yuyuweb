@@ -26,6 +26,10 @@ const Translation = new mongoose.Schema(
                 type: mongoose.Types.ObjectId,
                 required: true
             },
+            index: {
+                type: Number,
+                required: true
+            },
             name: {
                 type: String,
                 required: true
