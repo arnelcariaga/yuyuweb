@@ -5,67 +5,90 @@ import { getTranslationsAction } from "./../Redux/translationsDuck";
 import Button from 'react-bootstrap/Button';
 import Link from "next/link";
 import { useTranslation } from "next-i18next";
+import AudioPlayer from "./AudioPlayer";
 import moment from "moment"
-import Cell from "./Cell";
 import {
     FaEdit,
     FaTrash
 } from "react-icons/fa"
+
+const Cell = ({ row, type }) => {
+    const Element = () => {
+        if (type === "englishPhrase") {
+            return <>
+                {row.englishPhrase}
+                <AudioPlayer url={row.englishPhraseAudio} />
+            </>
+        } else if (type === "howToSay") {
+            return <>
+                {row.howToSay}
+                <AudioPlayer url={row.howToSayAudio} />
+            </>
+        }
+    }
+    return <div className="d-flex align-items-center">
+        <Element />
+    </div>
+}
+
+const Columns = (t) => {
+    let phrase = t("phrase"),
+        phraseTranslatedOnYourLang = t("phraseTranslatedOnYourLang");
+    const columns = [
+        {
+            name: phrase,
+            sortable: true,
+            selector: (row) => row.englishPhrase,
+            cell: (row) => <Cell type="englishPhrase" row={row} />
+        },
+        {
+            name: phraseTranslatedOnYourLang,
+            sortable: true,
+            selector: (row) => row.howToSay,
+            cell: (row) => <Cell type="howToSay" row={row} />
+        },
+        {
+            name: "Categoria",
+            sortable: true,
+            selector: (row) => row.category[0]._id,
+            cell: (row) => row.category[0].name
+        },
+        {
+            name: "Agregado por",
+            sortable: true,
+            selector: (row) => row.addedBy[0].username + `(${row.addedBy[0].userType === 2 ? "Admin" : "Usuario"})`
+        },
+        {
+            name: "Agregado el",
+            sortable: true,
+            selector: (row) => row.createdAt,
+            format: (row) => moment(row.createdAt).format('DD/MM/YYYY, h:mm a')
+        },
+        {
+            name: "Acciones",
+            sortable: true,
+            cell: (row) => {
+                return <>
+                    <Button variant="success" size="sm" className="me-2"><FaEdit /></Button>
+                    <Button variant="danger" size="sm"><FaTrash /></Button>
+                </>
+            }
+        },
+    ];
+    return { columns }
+}
 
 function TranslationsDataTable() {
     const dispatch = useDispatch();
     const translations = useSelector((s) => s.translationsData.translations);
     const { t } = useTranslation("common");
     let addTranslations = t("addTranslations"),
-        noDataTableFound = t("noDataTableFound"),
-        phrase = t("phrase"),
-        phraseTranslatedOnYourLang = t("phraseTranslatedOnYourLang");
-    const [editting, setEditting] = React.useState(null)
+        noDataTableFound = t("noDataTableFound");
+    const { columns } = Columns(t)
 
     React.useEffect(() => {
         dispatch(getTranslationsAction());
     }, [dispatch]);
-
-    const columns = React.useMemo(() => [
-        {
-            name: phrase,
-            sortable: true,
-            selector: (r) => r.englishPhrase,
-            cell: (r, i) => <Cell type="englishPhrase" editting={editting} index={i} row={r} />
-        },
-        {
-            name: phraseTranslatedOnYourLang,
-            sortable: true,
-            selector: (r) => r.howToSay,
-            cell: (r, i) => <Cell type="howToSay" editting={editting} index={i} row={r} />
-        },
-        {
-            name: "Categoria",
-            sortable: true,
-            selector: (r) => r.category[0]._id,
-            cell: (r, i) => <Cell type="category" editting={editting} index={i} row={r} />
-        },
-        {
-            name: "Agregado por",
-            sortable: true,
-            selector: (r) => r.addedBy[0].username + `(${r.addedBy[0].userType === 2 ? "Admin" : "Usuario"})`
-        },
-        {
-            name: "Agregado el",
-            sortable: true,
-            selector: (r) => r.createdAt,
-            format: (r) => moment(r.createdAt).format('DD/MM/YYYY, h:mm a')
-        },
-        {
-            name: "Acciones",
-            cell: (r, i) => {
-                return <div className="m-1">
-                    <Button variant="success" size="sm" className="me-2" onClick={() => setEditting({ r, i })}><FaEdit /></Button>
-                    <Button variant="danger" size="sm"><FaTrash /></Button>
-                </div>
-            }
-        },
-    ], [phrase, phraseTranslatedOnYourLang, editting])
 
     return <>
         <Link href="/dashboard">
@@ -79,9 +102,6 @@ function TranslationsDataTable() {
             data={translations}
             noDataComponent={noDataTableFound}
             pagination
-            fixedHeader
-            highlightOnHover
-            dense
         />
     </>
 }
