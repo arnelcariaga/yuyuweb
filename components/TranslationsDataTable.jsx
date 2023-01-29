@@ -90,7 +90,6 @@ function TranslationsDataTable() {
             fixedHeader
             highlightOnHover
             dense
-            defaultSortAsc={translations.length !== 0 ? false : true}
         />
     </>
 }
