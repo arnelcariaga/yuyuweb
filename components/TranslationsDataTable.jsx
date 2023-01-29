@@ -13,6 +13,24 @@ import {
     FaRegWindowClose,
     FaRegSave
 } from "react-icons/fa"
+import Modal from 'react-bootstrap/Modal';
+
+const DeleteModal = ({ title, body, showDeleteRowModal, setShowDeleteRowModal }) => {
+    return <Modal show={showDeleteRowModal} onHide={setShowDeleteRowModal}>
+        <Modal.Header closeButton>
+            <Modal.Title>{title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{body}</Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={setShowDeleteRowModal}>
+                Cancelar
+            </Button>
+            <Button variant="danger" onClick={setShowDeleteRowModal}>
+                Eliminar
+            </Button>
+        </Modal.Footer>
+    </Modal>
+}
 
 function TranslationsDataTable() {
     const dispatch = useDispatch();
@@ -23,6 +41,7 @@ function TranslationsDataTable() {
         phrase = t("phrase"),
         phraseTranslatedOnYourLang = t("phraseTranslatedOnYourLang");
     const [editting, setEditting] = React.useState(null)
+    const [showDeleteRowModal, setShowDeleteRowModal] = React.useState(false);
 
     React.useEffect(() => {
         dispatch(getTranslationsAction());
@@ -63,17 +82,30 @@ function TranslationsDataTable() {
             cell: (r, i) => {
                 if (editting?.i === i) {
                     return <div className="m-1">
-                        <Button variant="outline-success" size="sm" className="me-2" onClick={() => { }}><FaRegSave /></Button>
-                        <Button variant="outline-danger" size="sm"><FaRegWindowClose /></Button>
+                        <Button variant="outline-success" size="sm" className="me-2"><FaRegSave /></Button>
+                        <Button variant="outline-danger" size="sm" onClick={() => setEditting(null)}><FaRegWindowClose /></Button>
                     </div>
                 }
                 return <div className="m-1">
+                    {
+                        showDeleteRowModal?.i === i && <DeleteModal
+                            title="La siguiente traduccion se eliminara"
+                            body={<>
+                                Frase: {r.englishPhrase} <br />
+                                En tu idioma: {r.howToSay}
+                            </>
+                            }
+                            showDeleteRowModal={showDeleteRowModal.showModal}
+                            setShowDeleteRowModal={() => setShowDeleteRowModal(!showDeleteRowModal.showModal)}
+                        />
+                    }
+
                     <Button variant="success" size="sm" className="me-2" onClick={() => setEditting({ r, i })}><FaEdit /></Button>
-                    <Button variant="danger" size="sm"><FaTrash /></Button>
+                    <Button variant="danger" size="sm" onClick={() => setShowDeleteRowModal({ r, i, showModal: true })}><FaTrash /></Button>
                 </div>
             }
         },
-    ], [phrase, phraseTranslatedOnYourLang, editting])
+    ], [phrase, phraseTranslatedOnYourLang, editting, showDeleteRowModal])
 
     return <>
         <Link href="/dashboard">
