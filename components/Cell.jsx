@@ -42,7 +42,7 @@ const DefaultCell = ({ type, row, categories, locale }) => {
         </>
     } else if (type === "category") {
         let newCategory = categories.length > 0 && categories[0][locale]
-        return newCategory.length > 0 && newCategory.map(({index, name}) => index === row.category[0].index && name)
+        return newCategory.length > 0 && newCategory.map(({ index, name }) => index === row.category[0].index && name)
     } else {
         return null
     }
@@ -69,8 +69,8 @@ function Cell({ type, row, index, editting }) {
                     locale={locale}
                 /> :
                 <DefaultCell
-                categories={categories}
-                locale={locale}
+                    categories={categories}
+                    locale={locale}
                     type={type}
                     row={row}
                 />
