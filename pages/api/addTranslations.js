@@ -141,9 +141,9 @@ async function handler(req, res) {
       );
 
       res.json({
-        status: "error",
-        code: "server_error",
-        msg: "Error con el servidor",
+        status: "ok",
+        code: "translations_added",
+        msg: "Se ha agregado las traducciones",
         data: translation,
       });
     } catch (err) {
