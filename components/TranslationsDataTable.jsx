@@ -15,7 +15,13 @@ import {
 } from "react-icons/fa"
 import Modal from 'react-bootstrap/Modal';
 
-const DeleteModal = ({ title, body, showDeleteRowModal, setShowDeleteRowModal }) => {
+const DeleteModal = ({
+    title,
+    body,
+    showDeleteRowModal,
+    setShowDeleteRowModal,
+    confirmDelete,
+    disabled }) => {
     return <Modal show={showDeleteRowModal} onHide={setShowDeleteRowModal}>
         <Modal.Header closeButton>
             <Modal.Title>{title}</Modal.Title>
@@ -25,7 +31,7 @@ const DeleteModal = ({ title, body, showDeleteRowModal, setShowDeleteRowModal })
             <Button variant="secondary" onClick={setShowDeleteRowModal}>
                 Cancelar
             </Button>
-            <Button variant="danger" onClick={setShowDeleteRowModal}>
+            <Button variant="danger" disabled={disabled} onClick={confirmDelete}>
                 Eliminar
             </Button>
         </Modal.Footer>
@@ -40,14 +46,21 @@ function TranslationsDataTable() {
         noDataTableFound = t("noDataTableFound"),
         phrase = t("phrase"),
         phraseTranslatedOnYourLang = t("phraseTranslatedOnYourLang");
+    const [translationsData, setTranslationsData] = React.useState([])
     const [editting, setEditting] = React.useState(null)
     const [showDeleteRowModal, setShowDeleteRowModal] = React.useState(false);
+    const [deleteTranslationModalBTNStatus, setDeleteTranslationModalBTNStatus] = React.useState(false);
+    const [columns, setColumns] = React.useState([])
 
     React.useEffect(() => {
         dispatch(getTranslationsAction());
     }, [dispatch]);
 
-    const columns = React.useMemo(() => [
+    React.useEffect(() => {
+        setTranslationsData(translations)
+    }, [translations]);
+
+    React.useEffect(() => setColumns([
         {
             name: phrase,
             sortable: true,
@@ -80,6 +93,24 @@ function TranslationsDataTable() {
         {
             name: "Acciones",
             cell: (r, i) => {
+                const confirmDelete = async () => {
+                    setDeleteTranslationModalBTNStatus(true)
+                    const fetchTranslations = await fetch("/api/deleteTranslation", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            data: r
+                        })
+                    })
+                    const translationJSON = await fetchTranslations.json()
+
+                    if (translationJSON.code === "translation_deleted") {
+                        const data = translationsData.filter((item) => item._id !== r._id)
+                        setTranslationsData(data)
+                        setShowDeleteRowModal(!showDeleteRowModal.showModal)
+                        setDeleteTranslationModalBTNStatus(false)
+                    }
+                }
+
                 if (editting?.i === i) {
                     return <div className="m-1">
                         <Button variant="outline-success" size="sm" className="me-2"><FaRegSave /></Button>
@@ -92,20 +123,29 @@ function TranslationsDataTable() {
                             title="La siguiente traduccion se eliminara"
                             body={<>
                                 Frase: {r.englishPhrase} <br />
-                                En tu idioma: {r.howToSay}
+                                En tu idioma: {r.howToSay} <br />
+                                <strong>Nota:</strong> Se eliminara en la base de datos incluyendo los archivos mp3 de dicha taduccion
                             </>
                             }
                             showDeleteRowModal={showDeleteRowModal.showModal}
                             setShowDeleteRowModal={() => setShowDeleteRowModal(!showDeleteRowModal.showModal)}
+                            confirmDelete={confirmDelete}
+                            disabled={deleteTranslationModalBTNStatus}
                         />
                     }
-
                     <Button variant="success" size="sm" className="me-2" onClick={() => setEditting({ r, i })}><FaEdit /></Button>
                     <Button variant="danger" size="sm" onClick={() => setShowDeleteRowModal({ r, i, showModal: true })}><FaTrash /></Button>
                 </div>
             }
         },
-    ], [phrase, phraseTranslatedOnYourLang, editting, showDeleteRowModal])
+    ]), [
+        phrase,
+        phraseTranslatedOnYourLang,
+        editting,
+        showDeleteRowModal,
+        translationsData,
+        deleteTranslationModalBTNStatus
+    ])
 
     return <>
         <Link href="/dashboard">
@@ -116,12 +156,14 @@ function TranslationsDataTable() {
 
         <DataTable
             columns={columns}
-            data={translations}
+            data={translationsData}
             noDataComponent={noDataTableFound}
             pagination
             fixedHeader
             highlightOnHover
             dense
+            keyField="_id"
+            title="HAHAHHAHA"
         />
     </>
 }
