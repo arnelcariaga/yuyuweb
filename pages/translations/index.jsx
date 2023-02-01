@@ -10,7 +10,7 @@ function Translations() {
 
     return (
         <DashboardLayout title={seeTranslations}>
-            <TranslationsDataTable />
+            <TranslationsDataTable seeTranslations={seeTranslations} />
         </DashboardLayout>
     );
 }
