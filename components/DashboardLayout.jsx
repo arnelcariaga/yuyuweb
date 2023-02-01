@@ -21,21 +21,22 @@ function Layout({ children, title }) {
             <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
         </Head>
         <Container className="bg-info" fluid>
-            <Row className="min-vh-100 align-items-center p-5 pb-1 pt-1">
-                <Col md={12}>
+            <Row className="px-5 py-3">
+                <Col md={6}>
                     <ChangeLocale />
                 </Col>
+                <Col md={6} className="text-end">
+                    <Dropdown as={ButtonGroup} size="sm">
+                        <Button variant="success" size='sm'>{session?.user.username}</Button>
+                        <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => signOut()}>{signOutLabel}</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Col>
+            </Row>
+            <Row className="min-vh-100 px-5 pb-0">
                 <Col md={12}>
-                    <div className="d-flex align-items-center justify-content-between">
-                        <h3 className="text-white fw-bold">{newTitle}</h3>
-                        <Dropdown as={ButtonGroup}>
-                            <Button variant="success" size='sm'>{session?.user.username}</Button>
-                            <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
-                            <Dropdown.Menu>
-                                <Dropdown.Item onClick={() => signOut()}>{signOutLabel}</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </div>
                     {children}
                 </Col>
                 <Col md={12}>
