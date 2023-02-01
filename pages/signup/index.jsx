@@ -1,6 +1,6 @@
 import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import JoinLayout from "../../components/JoinLayout";;
+import JoinLayout from "../../components/JoinLayout";
 import SignUpForm from "../../components/SignUpForm"
 import { useTranslation } from "next-i18next";
 
