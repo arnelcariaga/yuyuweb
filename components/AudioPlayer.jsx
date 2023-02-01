@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa"
 
 const useAudio = url => {
-    const [audio] = React.useState(new Audio(url));
+    const audio = React.useRef();
     const [playing, setPlaying] = React.useState(false);
     const [repeat, setRepeat] = React.useState(false);
 
@@ -16,24 +16,36 @@ const useAudio = url => {
     const toggleRepeat = () => setRepeat(!repeat);
 
     React.useEffect(() => {
-        playing ? audio.play() : audio.pause();
-        repeat ? audio.loop = true : audio.loop = false;
+        audio.current = new Audio(url)
+    },
+        [audio, url]
+    );
+
+    React.useEffect(() => {
+        playing ? audio.current.play() : audio.current.pause();
+        repeat ? audio.current.loop = true : audio.current.loop = false;
     },
         [audio, playing, repeat]
     );
 
     React.useEffect(() => {
-        audio.addEventListener('ended', () => {
+        audio.current.addEventListener('ended', () => {
             setPlaying(false)
             setRepeat(false)
         });
         return () => {
-            audio.removeEventListener('ended', () => {
+            audio.current.removeEventListener('ended', () => {
                 setPlaying(false)
                 setRepeat(false)
             });
         };
     }, [audio]);
+
+    React.useEffect(() => {
+        return () => {
+            audio.current.pause()
+        }
+    }, [audio])
 
     return [playing, repeat, togglePlayPause, toggleRepeat];
 };
