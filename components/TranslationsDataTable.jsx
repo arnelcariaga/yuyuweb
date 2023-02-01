@@ -38,7 +38,7 @@ const DeleteModal = ({
     </Modal>
 }
 
-function TranslationsDataTable() {
+function TranslationsDataTable({ seeTranslations }) {
     const dispatch = useDispatch();
     const translations = useSelector((s) => s.translationsData.translations);
     const { t } = useTranslation("common");
@@ -162,8 +162,9 @@ function TranslationsDataTable() {
             fixedHeader
             highlightOnHover
             dense
+            selectAllRowsItem
             keyField="_id"
-            title="HAHAHHAHA"
+            title={seeTranslations}
         />
     </>
 }
