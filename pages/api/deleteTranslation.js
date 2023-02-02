@@ -3,7 +3,7 @@ const Translation = require("./../../utils/models/translations.model");
 import fs from "fs";
 import { getSession } from "next-auth/react";
 
-var async = require("async");
+const async = require("async");
 
 const deleteFile = function (file, callback) {
   fs.unlink("public" + file, callback);
