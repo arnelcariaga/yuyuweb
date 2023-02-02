@@ -20,6 +20,7 @@
     "next": "12.2.5",
     "next-auth": "^4.10.3",
     "next-i18next": "^12.1.0",
+    "onedrive-api": "^1.0.6",
     "react": "18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-data-table-component": "^7.5.3",
