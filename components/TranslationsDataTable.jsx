@@ -10,9 +10,9 @@ import Cell from "./Cell";
 import {
     FaEdit,
     FaTrash,
-    FaRegWindowClose,
-    FaRegSave
 } from "react-icons/fa"
+import { useForm } from "react-hook-form";
+import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
 const DeleteModal = ({
@@ -47,10 +47,11 @@ function TranslationsDataTable({ seeTranslations }) {
         phrase = t("phrase"),
         phraseTranslatedOnYourLang = t("phraseTranslatedOnYourLang");
     const [translationsData, setTranslationsData] = React.useState([])
+    const [columns, setColumns] = React.useState([])
     const [editting, setEditting] = React.useState(null)
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const [showDeleteRowModal, setShowDeleteRowModal] = React.useState(false);
     const [deleteTranslationModalBTNStatus, setDeleteTranslationModalBTNStatus] = React.useState(false);
-    const [columns, setColumns] = React.useState([])
 
     React.useEffect(() => {
         dispatch(getTranslationsAction());
@@ -65,19 +66,19 @@ function TranslationsDataTable({ seeTranslations }) {
             name: phrase,
             sortable: true,
             selector: (r) => r.englishPhrase,
-            cell: (r, i) => <Cell type="englishPhrase" editting={editting} index={i} row={r} />
+            cell: (r, i) => <Cell type="englishPhrase" i={i} r={r} editting={editting} register={register} errors={errors} />
         },
         {
             name: phraseTranslatedOnYourLang,
             sortable: true,
             selector: (r) => r.howToSay,
-            cell: (r, i) => <Cell type="howToSay" editting={editting} index={i} row={r} />
+            cell: (r, i) => <Cell type="howToSay" i={i} r={r} editting={editting} register={register} errors={errors} />
         },
         {
             name: "Categoria",
             sortable: true,
             selector: (r) => r.category[0]._id,
-            cell: (r, i) => <Cell type="category" editting={editting} index={i} row={r} />
+            cell: (r, i) => <Cell type="category" i={i} r={r} editting={editting} register={register} errors={errors} />
         },
         {
             name: "Agregado por",
@@ -93,6 +94,11 @@ function TranslationsDataTable({ seeTranslations }) {
         {
             name: "Acciones",
             cell: (r, i) => {
+
+                async function onSubmit(data) {
+                    console.log(data)
+                }
+
                 const confirmDelete = async () => {
                     setDeleteTranslationModalBTNStatus(true)
                     const fetchTranslations = await fetch("/api/deleteTranslation", {
@@ -112,12 +118,16 @@ function TranslationsDataTable({ seeTranslations }) {
                 }
 
                 if (editting?.i === i) {
-                    return <div className="m-1">
-                        <Button variant="outline-success" size="sm" className="me-2"><FaRegSave /></Button>
-                        <Button variant="outline-danger" size="sm" onClick={() => setEditting(null)}><FaRegWindowClose /></Button>
-                    </div>
+                    return <Form
+                        className="my-1"
+                        noValidate
+                        autoComplete="off"
+                        onSubmit={handleSubmit(onSubmit)}
+                    >
+                        <Cell type="actions" i={i} r={r} editting={editting} register={register} errors={errors} closeEditting={() => setEditting(null)} />
+                    </Form>
                 }
-                return <div className="m-1">
+                return <>
                     {
                         showDeleteRowModal?.i === i && <DeleteModal
                             title="La siguiente traduccion se eliminara"
@@ -133,18 +143,24 @@ function TranslationsDataTable({ seeTranslations }) {
                             disabled={deleteTranslationModalBTNStatus}
                         />
                     }
-                    <Button variant="success" size="sm" className="me-2" onClick={() => setEditting({ r, i })}><FaEdit /></Button>
+                    <Button variant="success" size="sm" className="me-2" onClick={() => {
+                        //setEditting({ r, i })
+                        alert("Para version beta")
+                    }}><FaEdit /></Button>
                     <Button variant="danger" size="sm" onClick={() => setShowDeleteRowModal({ r, i, showModal: true })}><FaTrash /></Button>
-                </div>
+                </>
             }
         },
     ]), [
         phrase,
         phraseTranslatedOnYourLang,
         editting,
+        handleSubmit,
+        register,
+        errors,
         showDeleteRowModal,
-        translationsData,
-        deleteTranslationModalBTNStatus
+        deleteTranslationModalBTNStatus,
+        translationsData
     ])
 
     return <>
