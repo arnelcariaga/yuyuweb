@@ -5,50 +5,86 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import AudioPlayer from "./AudioPlayer";
 import { useSelector, useDispatch } from "react-redux";
 import { getCategoriesAction } from "./../Redux/categoriesDucks";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import {
+    FaEdit,
+    FaTrash,
+    FaRegWindowClose,
+    FaRegSave
+} from "react-icons/fa"
 
-const EditCell = ({ type, row, categories, locale }) => {
+const EditCell = ({ type, categories, locale, editting, closeEditting, errors, register }) => {
+
+    console.log(errors)
+
     const fecthCategories = () => {
         let newCategory = categories.length > 0 && categories[0][locale]
         return newCategory.length > 0 && newCategory.map(({ _id, name, index }) => <option key={_id} data-id={_id} value={index} >{name}</option>)
     }
 
-    if (type === "englishPhrase") {
-        return <Form.Control size='sm' type="text" value={row.englishPhrase} />
-    } else if (type === "howToSay") {
-        return <Form.Control size='sm' type="text" value={row.englishPhrase} />
-    } else if (type === "category") {
-        return <Form.Select
-            aria-label="Categoria"
-            className='w-auto'
-            value={row.category[0].index}
-            size="sm"
-            onChange={() => { }}>
-            {fecthCategories()}
-        </Form.Select>
+    const Inputs = () => {
+        if (type === "englishPhrase") {
+            return <Form.Control
+                size='sm'
+                type="text"
+                isInvalid={errors.englishPhrase}
+                defaultValue={editting.r.englishPhrase}
+                {...register("englishPhrase", {
+                    required: true,
+                    maxLength: {
+                        value: 100,
+                        message: "Caracteres maximos permitidos es 100"
+                    },
+                    minLength: {
+                        value: 2,
+                        message: "Caracteres minimos permitidos es 2"
+                    },
+                })}
+            />
+        } else if (type === "howToSay") {
+            return <Form.Control
+                size='sm'
+                type="text"
+            />
+        } else if (type === "category") {
+            return <Form.Select
+                aria-label="Categoria"
+                className='w-auto'
+                size="sm"
+            >
+                {fecthCategories()}
+            </Form.Select>
+        } else if (type === "actions") {
+            return <>
+                <Button variant="outline-success" size="sm" className="me-2" type="submit"><FaRegSave /></Button>
+                <Button variant="outline-danger" size="sm" onClick={closeEditting}><FaRegWindowClose /></Button>
+            </>
+        }
     }
+
+    return <Inputs />
 
 }
 
-const DefaultCell = ({ type, row, categories, locale }) => {
+const DefaultCell = ({ type, r, categories, locale }) => {
     if (type === "englishPhrase") {
         return <>
-            {row.englishPhrase}
-            <AudioPlayer url={row.englishPhraseAudio} />
+            {r.englishPhrase}
+            <AudioPlayer url={r.englishPhraseAudio} />
         </>
     } else if (type === "howToSay") {
         return <>
-            {row.howToSay}
-            <AudioPlayer url={row.howToSayAudio} />
+            {r.howToSay}
+            <AudioPlayer url={r.howToSayAudio} />
         </>
     } else if (type === "category") {
         let newCategory = categories.length > 0 && categories[0][locale]
-        return newCategory.length > 0 && newCategory.map(({ index, name }) => index === row.category[0].index && name)
-    } else {
-        return null
+        return newCategory.length > 0 && newCategory.map(({ index, name }) => index === r.category[0].index && name)
     }
 }
 
-function Cell({ type, row, index, editting }) {
+function Cell({ type, r, i, editting, closeEditting, register, errors }) {
     const dispatch = useDispatch();
     const categories = useSelector((s) => s.categoriesData.categories);
     const router = useRouter();
@@ -60,19 +96,21 @@ function Cell({ type, row, index, editting }) {
 
     return <div className="d-flex align-items-center">
         {
-            index === editting?.i &&
-                row._id === editting.r._id ?
+            i === editting?.i ?
                 <EditCell
                     type={type}
-                    row={editting.r}
                     categories={categories}
                     locale={locale}
+                    editting={editting}
+                    closeEditting={closeEditting}
+                    errors={errors}
+                    register={register}
                 /> :
                 <DefaultCell
+                    type={type}
+                    r={r}
                     categories={categories}
                     locale={locale}
-                    type={type}
-                    row={row}
                 />
         }
     </div>
