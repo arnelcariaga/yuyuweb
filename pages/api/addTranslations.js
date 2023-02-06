@@ -4,7 +4,7 @@ import formidable from "formidable";
 import { getSession } from "next-auth/react";
 import fs from "fs";
 
-var async = require("async");
+const async = require("async");
 
 export const config = {
   api: {
